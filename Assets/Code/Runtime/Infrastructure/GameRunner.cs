@@ -1,11 +1,14 @@
-﻿using Code.Runtime.Infrastructure.Bootstrappers;
+using Code.Runtime.Infrastructure.Bootstrappers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Code.Runtime.Infrastructure
 {
     public class GameRunner : MonoBehaviour
     {
+        public static string StartScene { get; private set; }
+
         GameBootstrapper.Factory gameBootstrapperFactory;
 
         [Inject]
@@ -14,6 +17,9 @@ namespace Code.Runtime.Infrastructure
 
         private void Awake()
         {
+            if (string.IsNullOrEmpty(StartScene))
+                StartScene = SceneManager.GetActiveScene().name;
+
             StartBootstrapper();
         }
 
@@ -22,7 +28,7 @@ namespace Code.Runtime.Infrastructure
             var bootstrapper = FindObjectOfType<GameBootstrapper>();
 
             if (bootstrapper != null) return;
-            
+
             gameBootstrapperFactory.Create();
         }
     }

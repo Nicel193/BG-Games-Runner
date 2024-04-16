@@ -1,5 +1,8 @@
-﻿public static class InfrastructureAssetPath
+﻿namespace Code.Runtime.Infrastructure
 {
-    public const string GameBootstrapperPath = "Infrastructure/GameBootstrapper";
-    public const string CoroutineRunnerPath = "Infrastructure/CoroutineRunner";
+    public static class InfrastructureAssetPath
+    {
+        public const string GameBootstrapperPath = "Infrastructure/GameBootstrapper";
+        public const string CoroutineRunnerPath = "Infrastructure/CoroutineRunner";
+    }
 }
