@@ -27,3 +27,5 @@ MonoBehaviour:
   - {fileID: 170727631375730890, guid: 6d998870eb4591747a98ab06751e0227, type: 3}
   - {fileID: -7927919746530576101, guid: 9f0db6c5e9d5e3e4d9c0f51362e59d00, type: 3}
   - {fileID: 3872266177556282126, guid: 747e617dac045eb4f9fa9978b75bb475, type: 3}
+  InitialChunkCount: 10
+  SpawnDistance: 80

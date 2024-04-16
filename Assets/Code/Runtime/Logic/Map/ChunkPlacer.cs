@@ -13,8 +13,6 @@ namespace Map
     [Serializable]
     public class ChunkPlacer
     {
-        private const int InitialChunkCount = 3;
-        
         private Transform _player;
 
         // private IGameObjectPool<Chunk> _chunkPull;
@@ -30,14 +28,14 @@ namespace Map
 
             SpawnFirstChunk();
 
-            for (int i = 0; i < InitialChunkCount; i++) SpawnChunk();
+            for (int i = 0; i < _mapGenerationConfig.InitialChunkCount; i++) SpawnChunk();
         }
 
         public void Update()
         {
             float distance = Vector3.Distance(_chunks[^1].End.position, _player.position);
 
-            if (distance <= 10f)
+            if (distance <= _mapGenerationConfig.SpawnDistance)
             {
                 DestroyChunk();
                 SpawnChunk();
@@ -48,7 +46,7 @@ namespace Map
         {
             Chunk newChunk = CreateChunk();
             
-            newChunk.transform.position = new Vector3(_mapGenerationConfig.SpawnChunkOffsetX, 0, 0);
+            newChunk.transform.position = Vector3.zero;
             _chunks.Add(newChunk);
         }
 

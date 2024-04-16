@@ -2,6 +2,7 @@
 using Code.Runtime.Infrastructure.Bootstrappers;
 using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Interactors;
+using Code.Runtime.Services.InputService;
 using Code.Runtime.Services.LogService;
 using Zenject;
 
@@ -24,6 +25,13 @@ namespace Code.Runtime.Installers
             BindLogService();
 
             BindInteractorContainer();
+
+            BindInputService();
+        }
+
+        private void BindInputService()
+        {
+            Container.BindInterfacesTo<InputService>().AsSingle();
         }
 
         private void BindInteractorContainer()

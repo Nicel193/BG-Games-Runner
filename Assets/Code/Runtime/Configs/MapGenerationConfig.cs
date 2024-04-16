@@ -7,6 +7,7 @@ namespace Code.Runtime.Configs
     public class MapGenerationConfig : ScriptableObject
     {
         public Chunk[] ChunkPrefabs;
-        public float SpawnChunkOffsetX = -10f;
+        public int InitialChunkCount = 10;
+        public int SpawnDistance = 40;
     }
 }
