@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Code;
 using Code.Runtime.Configs;
 using Code.Runtime.Infrastructure.ObjectPool;
-using Code.Runtime.Logic.Map;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-namespace Map
+namespace Code.Runtime.Logic.Map
 {
     [Serializable]
     public class ChunkPlacer
@@ -69,6 +67,6 @@ namespace Map
         }
 
         private Chunk CreateChunk() =>
-            Object.Instantiate(_mapGenerationConfig.ChunkPrefabs[Random.Range(0, _chunks.Count)]);
+            Object.Instantiate(_mapGenerationConfig.ChunkPrefabs[Random.Range(0, _mapGenerationConfig.ChunkPrefabs.Length)]);
     }
 }
