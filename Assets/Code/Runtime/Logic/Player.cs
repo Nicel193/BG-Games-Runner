@@ -8,6 +8,8 @@ namespace Code.Runtime.Logic
     [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
     public class Player : MonoBehaviour
     {
+        private const float ScaleFactor = 0.0001f;
+        
         [SerializeField] private PlayerConfig playerConfig;
         [SerializeField] private PlayerAnimator playerAnimator;
 
@@ -17,6 +19,8 @@ namespace Code.Runtime.Logic
         private Rigidbody _rigidbody;
         private IInputService _inputService;
         private BoxCollider _boxCollider;
+
+        private float speedScale;
 
         private void Awake()
         {
@@ -54,7 +58,9 @@ namespace Code.Runtime.Logic
             _playerStateMachine.UpdateState();
             _playerSideMovement.UpdatePosition();
 
-            transform.Translate(Vector3.forward * (playerConfig.StartMoveSpeed * Time.deltaTime));
+            transform.Translate(Vector3.forward * ((playerConfig.StartMoveSpeed + speedScale) * Time.deltaTime));
+
+            speedScale += playerConfig.MoveSpeedScaler * ScaleFactor;
         }
     }
 }
