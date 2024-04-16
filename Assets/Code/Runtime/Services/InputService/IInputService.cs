@@ -7,5 +7,6 @@ namespace Code.Runtime.Services.InputService
         event Action OnLeftMove;
         event Action OnRightMove;
         event Action OnJump;
+        event Action OnSliding;
     }
 }

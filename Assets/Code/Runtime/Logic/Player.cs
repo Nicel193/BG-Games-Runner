@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Code.Runtime.Logic
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private PlayerConfig playerConfig;
@@ -15,10 +15,12 @@ namespace Code.Runtime.Logic
 
         private Rigidbody _rigidbody;
         private IInputService _inputService;
+        private BoxCollider _boxCollider;
 
         private void Awake()
         {
             _rigidbody = this.GetComponent<Rigidbody>();
+            _boxCollider = this.GetComponent<BoxCollider>();
         }
 
         private void Start()
@@ -40,6 +42,7 @@ namespace Code.Runtime.Logic
         {
             _playerStateMachine.RegisterState(new RunState(_rigidbody, _inputService, _playerStateMachine));
             _playerStateMachine.RegisterState(new JumpState(_rigidbody, _inputService, _playerStateMachine, 5f));
+            _playerStateMachine.RegisterState(new SlidingState(_rigidbody, _inputService, _playerStateMachine, _boxCollider, 0.5f));
             
             _playerStateMachine.Enter<RunState>();
         }

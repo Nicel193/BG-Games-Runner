@@ -20,12 +20,17 @@ namespace Code.Runtime.Logic
             _inputService = inputService;
 
             _inputService.OnJump += OnJump;
+            _inputService.OnSliding += OnSliding;
         }
 
         public void Dispose()
         {
             _inputService.OnJump -= OnJump;
+            _inputService.OnSliding -= OnSliding;
         }
+
+        private void OnSliding() =>
+            PlayerStateMachine.Enter<SlidingState>();
 
         private void OnJump() =>
             PlayerStateMachine.Enter<JumpState>();
