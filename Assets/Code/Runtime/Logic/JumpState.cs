@@ -8,11 +8,13 @@ namespace Code.Runtime.Logic
     {
         private float _jumpForce;
         private float _groundHeight;
+        private PlayerAnimator _playerAnimator;
 
         public JumpState(Rigidbody playerRigidbody, IInputService inputService,
-            PlayerStateMachine playerStateMachine, float jumpForce)
+            PlayerStateMachine playerStateMachine, float jumpForce, PlayerAnimator playerAnimator)
             : base(playerRigidbody, inputService, playerStateMachine)
         {
+            _playerAnimator = playerAnimator;
             _jumpForce = jumpForce;
             _groundHeight = PlayerTransform.position.y;
         }
@@ -21,6 +23,7 @@ namespace Code.Runtime.Logic
         {
             PlayerRigidbody.isKinematic = false;
             PlayerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            _playerAnimator.Jump(true);
         }
 
         public void Update()
@@ -36,6 +39,7 @@ namespace Code.Runtime.Logic
             Vector3 transformPosition = PlayerTransform.position;
             transformPosition.y = _groundHeight;
             PlayerTransform.position = transformPosition;
+            _playerAnimator.Jump(false);
         }
     }
 }

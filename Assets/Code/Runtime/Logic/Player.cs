@@ -9,6 +9,7 @@ namespace Code.Runtime.Logic
     public class Player : MonoBehaviour
     {
         [SerializeField] private PlayerConfig playerConfig;
+        [SerializeField] private PlayerAnimator playerAnimator;
 
         private PlayerStateMachine _playerStateMachine;
         private PlayerSideMovement _playerSideMovement;
@@ -28,7 +29,7 @@ namespace Code.Runtime.Logic
             _playerSideMovement = new PlayerSideMovement(_rigidbody, _inputService,
                 playerConfig.SideMoveOffset, playerConfig.ChangeSideSpeed);
             _playerStateMachine = new PlayerStateMachine();
-            
+
             RegisterStates();
         }
 
@@ -40,10 +41,11 @@ namespace Code.Runtime.Logic
 
         private void RegisterStates()
         {
-            _playerStateMachine.RegisterState(new RunState(_rigidbody, _inputService, _playerStateMachine));
-            _playerStateMachine.RegisterState(new JumpState(_rigidbody, _inputService, _playerStateMachine, 5f));
-            _playerStateMachine.RegisterState(new SlidingState(_rigidbody, _inputService, _playerStateMachine, _boxCollider, 0.5f));
-            
+            _playerStateMachine.RegisterState(new RunState(_rigidbody, _inputService, _playerStateMachine, playerAnimator));
+            _playerStateMachine.RegisterState(new JumpState(_rigidbody, _inputService, _playerStateMachine, 3f, playerAnimator));
+            _playerStateMachine.RegisterState(new SlidingState(_rigidbody, _inputService, _playerStateMachine,
+                _boxCollider, 0.5f, playerAnimator));
+
             _playerStateMachine.Enter<RunState>();
         }
 

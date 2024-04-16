@@ -5,15 +5,23 @@ namespace Code.Runtime.Logic
 {
     public class RunState : PlayerState
     {
-        public RunState(Rigidbody playerRigidbody, IInputService inputService, PlayerStateMachine playerStateMachine) :
-            base(playerRigidbody, inputService, playerStateMachine) { }
+        private PlayerAnimator _playerAnimator;
 
-        public override void Exit()
+        public RunState(Rigidbody playerRigidbody, IInputService inputService,
+            PlayerStateMachine playerStateMachine, PlayerAnimator playerAnimator) :
+            base(playerRigidbody, inputService, playerStateMachine)
         {
+            _playerAnimator = playerAnimator;
         }
 
         public override void Enter()
         {
+            _playerAnimator.Run(true);
+        }
+
+        public override void Exit()
+        {
+            _playerAnimator.Run(false);
         }
     }
 }
