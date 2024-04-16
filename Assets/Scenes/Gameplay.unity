@@ -659,9 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61540d559716491386e2a25314aa5c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunkPrefab: {fileID: 170727631375730890, guid: 6d998870eb4591747a98ab06751e0227, type: 3}
-  _chunkPlacer:
-    _spawnChunkOffsetX: -10
+  _mapGenerationConfig: {fileID: 11400000, guid: 7164b21517df0404da71d76f84f6199f, type: 2}
   _player: {fileID: 1847679695}
 --- !u!4 &2014237809
 Transform:

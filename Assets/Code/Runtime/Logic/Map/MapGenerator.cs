@@ -1,3 +1,4 @@
+using Code;
 using Code.Runtime.Infrastructure.ObjectPool;
 using Code.Runtime.Logic.Map;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Map
 {
     public class MapGenerator : MonoBehaviour
     {
-        [SerializeField] private Chunk _chunkPrefab;
+        [SerializeField] private MapGenerationConfig _mapGenerationConfig;
         [SerializeField] private ChunkPlacer _chunkPlacer;
         [SerializeField] private Transform _player;
         
@@ -21,7 +22,7 @@ namespace Map
         
         private void Start()
         {
-            _chunkPlacer.Init(_player, _chunkPrefab, _gameObjectsPoolContainer);
+            _chunkPlacer.Init(_player, _mapGenerationConfig, _gameObjectsPoolContainer);
         }
 
         private void Update()
