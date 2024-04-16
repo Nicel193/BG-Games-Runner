@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c3f0e52ebc4623844ffa9a9f2bd358, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
+  StartMoveSpeed: 5
+  MoveSpeedScaler: 2
+  SideMoveOffset: 1.6
+  ChangeSideSpeed: 5
   SmoothSpeed: 5
   Height: 3
   ZOffset: -6.5

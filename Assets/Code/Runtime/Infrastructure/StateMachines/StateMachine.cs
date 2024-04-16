@@ -23,10 +23,18 @@ namespace Code.Runtime.Infrastructure.StateMachines
 
         public void RegisterState<TState>(TState state) where TState : IExitableState => 
             _states.Add(typeof(TState), state);
+        
+        public void UpdateState()
+        {
+            if (_activeState != null && _activeState is IUpdatebleState updatebleState)
+                updatebleState.Update();
+        }
 
         private TState ChangeState<TState>() where TState : class, IExitableState
         {
             TState state = GetState<TState>();
+
+            if (state == _activeState) return null;
             
             _activeState?.Exit();
             _activeState = state;

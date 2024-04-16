@@ -25,6 +25,9 @@ namespace Code.Runtime.Logic
         {
             _playerSideMovement = new PlayerSideMovement(_rigidbody, _inputService,
                 playerConfig.SideMoveOffset, playerConfig.ChangeSideSpeed);
+            _playerStateMachine = new PlayerStateMachine();
+            
+            RegisterStates();
         }
 
         [Inject]
@@ -33,10 +36,19 @@ namespace Code.Runtime.Logic
             _inputService = inputService;
         }
 
+        private void RegisterStates()
+        {
+            _playerStateMachine.RegisterState(new RunState(_rigidbody, _inputService, _playerStateMachine));
+            _playerStateMachine.RegisterState(new JumpState(_rigidbody, _inputService, _playerStateMachine, 5f));
+            
+            _playerStateMachine.Enter<RunState>();
+        }
+
         public void Update()
         {
+            _playerStateMachine.UpdateState();
             _playerSideMovement.UpdatePosition();
-            
+
             transform.Translate(Vector3.forward * (playerConfig.StartMoveSpeed * Time.deltaTime));
         }
     }
