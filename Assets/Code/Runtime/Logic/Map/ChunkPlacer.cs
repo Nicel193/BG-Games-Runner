@@ -16,10 +16,12 @@ namespace Code.Runtime.Logic.Map
         // private IGameObjectPool<Chunk> _chunkPull;
         private List<Chunk> _chunks = new List<Chunk>();
         private MapGenerationConfig _mapGenerationConfig;
+        private IObstaclePlacer _obstaclePlacer;
 
         public void Init(Transform player, MapGenerationConfig mapGenerationConfig,
-            IGameObjectsPoolContainer poolContainer)
+            IGameObjectsPoolContainer poolContainer, IObstaclePlacer obstaclePlacer)
         {
+            _obstaclePlacer = obstaclePlacer;
             _mapGenerationConfig = mapGenerationConfig;
             // _chunkPull = new ComponentPool<Chunk>(chunk, InitialChunkCount, poolContainer);
             _player = player;
@@ -54,14 +56,15 @@ namespace Code.Runtime.Logic.Map
             newChunk.transform.position = _chunks[^1].End.position - newChunk.Begin.localPosition;
 
             _chunks.Add(newChunk);
+            _obstaclePlacer.SpawnObstacle(newChunk);
         }
 
         private void DestroyChunk()
         {
             if (_chunks.Count > 0)
             {
-                // _chunkPull.Return(_chunks[0]);
                 _chunks.RemoveAt(0);
+                _obstaclePlacer.DestroyObstacle(_chunks[0]);
                 Object.Destroy(_chunks[0].gameObject);
             }
         }

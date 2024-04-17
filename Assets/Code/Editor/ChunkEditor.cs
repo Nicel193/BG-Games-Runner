@@ -23,7 +23,7 @@ namespace Code.Editor
 
             if (GUILayout.Button("Add obstacles"))
             {
-                _chunk.obstaclePositions.Add(0);
+                _chunk.obstaclePositions.Add(0.5f);
             }
 
             if (_chunk.obstaclePositions != null)

@@ -671,6 +671,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Begin>k__BackingField: {fileID: 4000011309990494}
   <End>k__BackingField: {fileID: 4000011259241260}
+  <AllowedObstacles>k__BackingField: 1
+  obstaclePositions:
+  - 0.5
 --- !u!1 &1000013029886578
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,64 +5,51 @@ using UnityEngine;
 
 namespace Code.Runtime.Logic.Map
 {
-    public class ObstaclePlacer
+    public class ObstaclePlacer : IObstaclePlacer
     {
-        private List<Obstacle> _obstacles = new List<Obstacle>();
+        private Dictionary<Chunk, List<Obstacle>> _obstacles = new Dictionary<Chunk, List<Obstacle>>();
         private MapGenerationConfig _mapGenerationConfig;
-        private Transform _player;
 
-        public void Init(Transform player, MapGenerationConfig mapGenerationConfig,
+        public void Init(MapGenerationConfig mapGenerationConfig,
             IGameObjectsPoolContainer poolContainer)
         {
             _mapGenerationConfig = mapGenerationConfig;
-            _player = player;
-            // _ObstaclePull = new ComponentPool<Obstacle>(Obstacle, InitialObstacleCount, poolContainer);
-
-            SpawnFirstObstacle();
-
-            for (int i = 0; i < _mapGenerationConfig.InitialObstacleCount; i++) SpawnObstacle();
         }
 
-        public void Update()
+        public void SpawnObstacle(Chunk chunk)
         {
-            float distance = Vector3.Distance(_obstacles[^1].transform.position, _player.position);
+            List<float> obstaclePositions = chunk.obstaclePositions;
 
-            if (distance <= 10f)
+            _obstacles.Add(chunk, new List<Obstacle>());
+
+            for (int i = 0; i < obstaclePositions.Count; i++)
             {
-                // DestroyObstacle();
-                SpawnObstacle();
+                if(Random.Range(0, 11) >= 5) return;
+                
+                Vector3 obstaclePosition = chunk.GetObstaclePosition(i);
+                Obstacle newObstacle = CreateObstacle();
+                
+                // bool allowedObstacle = (chunk.AllowedObstacles & newObstacle.ObstacleType) != 0;
+
+                newObstacle.transform.position = obstaclePosition;
+
+                _obstacles[chunk].Add(newObstacle);
             }
         }
 
-        private void SpawnFirstObstacle()
+        public void DestroyObstacle(Chunk chunk)
         {
-            Obstacle newObstacle = CreateObstacle();
+            if (!_obstacles.TryGetValue(chunk, out List<Obstacle> chunkObstacles)) return;
             
-            newObstacle.transform.position = new Vector3(0f, 0f, 10f);
-            _obstacles.Add(newObstacle);
-        }
-
-        private void SpawnObstacle()
-        {
-            Obstacle newObstacle = CreateObstacle();
-            
-            Vector3 randomObstaclePosition = new Vector3(0f, 0f, Random.Range(20f, 30f));
-            newObstacle.transform.position = _obstacles[^1].transform.position + randomObstaclePosition;
-
-            _obstacles.Add(newObstacle);
-        }
-
-        private void DestroyObstacle()
-        {
-            if (_obstacles.Count > 0)
-            {
-                // _ObstaclePull.Return(_obstacles[0]);
-                _obstacles.RemoveAt(0);
-                Object.Destroy(_obstacles[0].gameObject);
-            }
+            foreach (Obstacle obstacle in chunkObstacles)
+                Object.Destroy(obstacle.gameObject);
+                
+            chunkObstacles.Clear();
+            _obstacles.Remove(chunk);
         }
 
         private Obstacle CreateObstacle() =>
-            Object.Instantiate(_mapGenerationConfig.ObstaclesPrefabs[Random.Range(0, _mapGenerationConfig.ObstaclesPrefabs.Length)]);
+            Object.Instantiate(
+                _mapGenerationConfig.ObstaclesPrefabs[Random.Range(0, _mapGenerationConfig.ObstaclesPrefabs.Length)]);
     }
 }
