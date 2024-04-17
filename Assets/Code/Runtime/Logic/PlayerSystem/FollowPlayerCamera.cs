@@ -1,9 +1,9 @@
 using Code.Runtime.Configs;
 using UnityEngine;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem
 {
-    public class FollowPlayerCamera : MonoBehaviour
+    public class FollowPlayerCamera : MonoBehaviour, IFollowPlayerCamera
     {
         [SerializeField] private PlayerConfig _cameraConfig;
         [SerializeField] private Transform _playerTransform;

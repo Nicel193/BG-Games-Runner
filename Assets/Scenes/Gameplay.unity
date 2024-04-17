@@ -132,6 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 51964112}
+  - component: {fileID: 51964114}
+  - component: {fileID: 51964113}
   m_Layer: 0
   m_Name: PlayerSystem
   m_TagString: Untagged
@@ -156,6 +158,40 @@ Transform:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &51964113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51964111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c749832290c4389a090691c7da98711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followPlayerCamera: {fileID: 963194229}
+  playerConfig: {fileID: 11400000, guid: 87a6f91bea51029439056fcb077b9d60, type: 2}
+  playerAnimator: {fileID: 1847679700}
+  player: {fileID: 1847679697}
+--- !u!114 &51964114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51964111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 51964113}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
 --- !u!1 &86542311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,8 +1089,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe54a08bbf24712820524d8047689fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerConfig: {fileID: 11400000, guid: 87a6f91bea51029439056fcb077b9d60, type: 2}
-  playerAnimator: {fileID: 1847679700}
 --- !u!54 &1847679698
 Rigidbody:
   m_ObjectHideFlags: 0

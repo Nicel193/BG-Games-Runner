@@ -1,9 +1,10 @@
+using Code.Runtime.Logic.PlayerSystem;
 using UnityEngine;
 
 namespace Code.Runtime.Logic
 {
     [RequireComponent(typeof(Animator))]
-    public class PlayerAnimator : MonoBehaviour
+    public class PlayerAnimator : MonoBehaviour, IPlayerAnimator
     {
         static int DeadHash = Animator.StringToHash ("Dead");
         static int RunHash = Animator.StringToHash("Run");
