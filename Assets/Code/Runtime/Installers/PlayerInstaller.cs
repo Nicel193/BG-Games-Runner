@@ -19,9 +19,7 @@ namespace Code.Runtime.Installers
             Container.BindInstance(playerConfig).AsSingle();
             
             // BindFollowPlayerCamera();
-
-            BindPlayerStateMachine();
-
+            
             BindPlayerStatesFactory();
 
             BindPlayerAnimator();
@@ -36,11 +34,6 @@ namespace Code.Runtime.Installers
         private void BindFollowPlayerCamera()
         {
             Container.BindInterfacesTo<FollowPlayerCamera>().FromInstance(playerAnimator).AsSingle();
-        }
-
-        private void BindPlayerStateMachine()
-        {
-            Container.Bind<PlayerStateMachine>().AsSingle();
         }
 
         private void BindPlayerStatesFactory()

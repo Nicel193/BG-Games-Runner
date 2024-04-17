@@ -39,6 +39,11 @@ namespace Code.Runtime.Logic.PlayerSystem
             _animator.SetBool(MovingHash, isPlay);
         }
 
+        public void PlayIdle()
+        {
+            
+        }
+
         public void StartRun()
         {
             _animator.Play(RunHash);

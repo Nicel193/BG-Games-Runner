@@ -26,7 +26,7 @@ namespace Code.Runtime.Logic.PlayerSystem
         {
             RegisterStates();
             
-            _playerStateMachine.Enter<RunStateTmp>();
+            _playerStateMachine.Enter<IdleState>();
         }
 
         [Inject]
@@ -45,6 +45,7 @@ namespace Code.Runtime.Logic.PlayerSystem
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<RunStateTmp>());
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<JumpState>());
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<SlidingState>());
+            _playerStateMachine.RegisterState(_playerStatesFactory.Create<IdleState>());
         }
 
         public void OnTriggerEnter(Collider other)
