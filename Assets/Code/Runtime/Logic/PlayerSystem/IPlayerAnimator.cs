@@ -1,3 +1,5 @@
+using System;
+
 namespace Code.Runtime.Logic.PlayerSystem
 {
     public interface IPlayerAnimator
@@ -7,5 +9,6 @@ namespace Code.Runtime.Logic.PlayerSystem
         void Sliding(bool isPlay);
         void Run(bool isPlay);
         void StartRun();
+        void PlayStartAnimation(Action onStartAnimationPlayed);
     }
 }

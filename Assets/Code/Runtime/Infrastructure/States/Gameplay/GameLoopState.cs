@@ -14,7 +14,7 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
         
         public void Enter()
         {
-            _playerStateMachine.Enter<RunStateTmp>();
+            _playerStateMachine.Enter<StartRunState>();
         }
 
         public void Exit()

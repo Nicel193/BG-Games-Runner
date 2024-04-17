@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Code.Runtime.Logic.PlayerSystem
@@ -9,10 +10,11 @@ namespace Code.Runtime.Logic.PlayerSystem
         static int RunHash = Animator.StringToHash("Run");
         static int MovingHash = Animator.StringToHash("Moving");
         static int JumpingHash = Animator.StringToHash("Jumping");
-        static int JumpingSpeedHash = Animator.StringToHash("JumpSpeed");
         static int SlidingHash = Animator.StringToHash("Sliding");
+        static int StartHash = Animator.StringToHash("Start");
 
         private Animator _animator;
+        private Action _onStartAnimationPlayed;
 
         private void Awake()
         {
@@ -39,10 +41,15 @@ namespace Code.Runtime.Logic.PlayerSystem
             _animator.SetBool(MovingHash, isPlay);
         }
 
-        public void PlayIdle()
+        public void PlayStartAnimation(Action onStartAnimationPlayed)
         {
+            _onStartAnimationPlayed = onStartAnimationPlayed;
             
+            _animator.Play(StartHash);
         }
+
+        public void OnStartAnimationPlayed() =>
+            _onStartAnimationPlayed?.Invoke();
 
         public void StartRun()
         {
