@@ -7,14 +7,17 @@ namespace Code.Runtime.Logic.Map
 {
     public class ObstaclePlacer : IObstaclePlacer
     {
+        private const string ObstaclesPoolName = "ObstaclesPool";
+
         private Dictionary<Chunk, List<Obstacle>> _obstacles = new Dictionary<Chunk, List<Obstacle>>();
         private IObjectPool<Obstacle> _obstaclesPool;
 
         public void Init(MapGenerationConfig mapGenerationConfig, IGameObjectsPoolContainer poolContainer)
         {
             ObstacleFactory obstacleFactory = new ObstacleFactory(mapGenerationConfig);
-            
-            _obstaclesPool = new ObstaclesPool(obstacleFactory, mapGenerationConfig.InitialObstacleCount, poolContainer);
+
+            _obstaclesPool = new GroupObjectPool<Obstacle>(obstacleFactory, mapGenerationConfig.InitialObstacleCount,
+                poolContainer, ObstaclesPoolName);
         }
 
         public void SpawnObstacle(Chunk chunk)
@@ -25,11 +28,11 @@ namespace Code.Runtime.Logic.Map
 
             for (int i = 0; i < obstaclePositions.Count; i++)
             {
-                if(Random.Range(0, 11) >= 5) return;
-                
+                if (Random.Range(0, 11) >= 5) return;
+
                 Vector3 obstaclePosition = chunk.GetObstaclePosition(i);
                 Obstacle newObstacle = _obstaclesPool.Get();
-                
+
                 // bool allowedObstacle = (chunk.AllowedObstacles & newObstacle.ObstacleType) != 0;
 
                 obstaclePosition = ObstacleInCells(newObstacle, obstaclePosition);
@@ -43,7 +46,7 @@ namespace Code.Runtime.Logic.Map
         private static Vector3 ObstacleInCells(Obstacle obstacle, Vector3 obstaclePosition)
         {
             if (obstacle.ObstacleSize != ObstacleSize.OneCell) return obstaclePosition;
-            
+
             int cellIndex = Random.Range(0, 3);
             float positionOffset = 0;
 
@@ -63,10 +66,10 @@ namespace Code.Runtime.Logic.Map
         public void DestroyObstacle(Chunk chunk)
         {
             if (!_obstacles.TryGetValue(chunk, out List<Obstacle> chunkObstacles)) return;
-            
+
             foreach (Obstacle obstacle in chunkObstacles)
                 _obstaclesPool.Return(obstacle);
-                
+
             chunkObstacles.Clear();
             _obstacles.Remove(chunk);
         }

@@ -1,62 +1,61 @@
 using System.Collections.Generic;
-using Code.Runtime.Logic.Map;
 using UnityEngine;
 
 namespace Code.Runtime.Infrastructure.ObjectPool
 {
-    public class ObstaclesPool : IObjectPool<Obstacle>
+    public class GroupObjectPool<T> : IObjectPool<T> where T : Component
     {
-        private const string ObstaclesPoolName = "ObstaclesPool";
-        
-        private readonly IFactory<Obstacle> _obstaclesFactory;
+        private readonly IFactory<T> _objectFactory;
         private readonly IGameObjectsPoolContainer _gameObjectsPoolContainer;
         private readonly int _preloadCount;
 
-        private List<Obstacle> _pool = new List<Obstacle>();
+        private List<T> _pool = new List<T>();
         private Transform _poolContainer;
 
-        public ObstaclesPool(IFactory<Obstacle> obstaclesFactory, int preloadCount, IGameObjectsPoolContainer gameObjectsPoolContainer)
+        public GroupObjectPool(IFactory<T> objectFactory, int preloadCount, IGameObjectsPoolContainer gameObjectsPoolContainer, string poolName)
         {
             _preloadCount = preloadCount;
-            _obstaclesFactory = obstaclesFactory;
+            _objectFactory = objectFactory;
             _gameObjectsPoolContainer = gameObjectsPoolContainer;
-            _poolContainer = gameObjectsPoolContainer.CreatePoolContainer(ObstaclesPoolName);
+            _poolContainer = gameObjectsPoolContainer.CreatePoolContainer(poolName);
             
             SpawnObjects();
         }
         
-        public Obstacle Get()
+        public T Get()
         {
-            Obstacle item = _pool.Count > 0 ? _pool[Random.Range(0, _pool.Count)] : PreloadAction();
+            T item = _pool.Count > 0 ? _pool[Random.Range(0, _pool.Count)] : PreloadAction();
+
+            if(_pool.Contains(item)) _pool.Remove(item);
  
             GetAction(item);
 
             return item;
         }
 
-        public void Return(Obstacle item)
+        public void Return(T item)
         {
             ReturnAction(item);
             ReturnToPoolContainer(item);
             _pool.Add(item);
         }
 
-        private Obstacle PreloadAction()
+        private T PreloadAction()
         {
-            Obstacle createdObject = _obstaclesFactory.Create();
+            T createdObject = _objectFactory.Create();
 
             ReturnToPoolContainer(createdObject);
 
             return createdObject;
         }
 
-        private void ReturnToPoolContainer(Obstacle createdObject) =>
+        private void ReturnToPoolContainer(T createdObject) =>
             _gameObjectsPoolContainer.AddInPoolContainer(createdObject.transform, _poolContainer);
 
-        private void ReturnAction(Obstacle @object)
+        private void ReturnAction(T @object)
             => @object.gameObject.SetActive(false);
 
-        private void GetAction(Obstacle @object)
+        private void GetAction(T @object)
             => @object.gameObject.SetActive(true);
 
         private void SpawnObjects()
