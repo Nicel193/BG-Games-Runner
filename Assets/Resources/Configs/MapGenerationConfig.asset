@@ -30,5 +30,8 @@ MonoBehaviour:
   ObstaclesPrefabs:
   - {fileID: 7540894774944968294, guid: b19a0bd8ede69fe4683dff84150a047b, type: 3}
   - {fileID: 5419085087356497829, guid: d68ac797bf384f84bbca159dc2a6e4d7, type: 3}
+  - {fileID: 1080289179552282811, guid: b718c14c1e836cc4a8ca91d61382c504, type: 3}
+  - {fileID: 4126236397975840481, guid: 22facfbe232a90b45b681c638f2e490d, type: 3}
   InitialChunkCount: 10
+  InitialObstacleCount: 5
   SpawnDistance: 80

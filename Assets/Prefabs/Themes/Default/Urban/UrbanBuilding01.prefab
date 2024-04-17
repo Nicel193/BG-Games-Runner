@@ -902,3 +902,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Begin>k__BackingField: {fileID: 4000011989671086}
   <End>k__BackingField: {fileID: 4000011266881492}
+  <AllowedObstacles>k__BackingField: 1
+  obstaclePositions: []
