@@ -1,12 +1,10 @@
 using Code.Runtime.Configs;
-using Code.Runtime.Logic.PlayerSystem;
-using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Services.InputService;
 using UnityEngine;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem.States
 {
-    public class JumpState : RunState
+    public class JumpState : GroundState
     {
         private float _jumpForce;
         private float _groundHeight;
@@ -21,6 +19,8 @@ namespace Code.Runtime.Logic
 
         public override void Enter()
         {
+            base.Enter();
+            
             PlayerRigidbody.isKinematic = false;
             PlayerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             PlayerAnimator.Jump(true);
@@ -31,11 +31,13 @@ namespace Code.Runtime.Logic
             base.Update();
             
             if (PlayerTransform.position.y < _groundHeight)
-                PlayerStateMachine.Enter<RunState>();
+                PlayerStateMachine.Enter<RunStateTmp>();
         }
 
         public override void Exit()
         {
+            base.Exit();
+            
             PlayerRigidbody.isKinematic = true;
             Vector3 transformPosition = PlayerTransform.position;
             transformPosition.y = _groundHeight;

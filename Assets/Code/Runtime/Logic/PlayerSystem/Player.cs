@@ -26,7 +26,7 @@ namespace Code.Runtime.Logic.PlayerSystem
         {
             RegisterStates();
             
-            _playerStateMachine.Enter<RunState>();
+            _playerStateMachine.Enter<RunStateTmp>();
         }
 
         [Inject]
@@ -42,7 +42,7 @@ namespace Code.Runtime.Logic.PlayerSystem
         private void RegisterStates()
         {
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<DeadState>());
-            _playerStateMachine.RegisterState(_playerStatesFactory.Create<RunState>());
+            _playerStateMachine.RegisterState(_playerStatesFactory.Create<RunStateTmp>());
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<JumpState>());
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<SlidingState>());
         }

@@ -15,6 +15,7 @@ namespace Code.Runtime.Configs
         public float JumpForce = 4f;
         
         public float SlidingHeight = 0.5f;
+        public float SlidingTime = 1f;
 
         [Header("Camera")]
         public float SmoothSpeed = 5f;

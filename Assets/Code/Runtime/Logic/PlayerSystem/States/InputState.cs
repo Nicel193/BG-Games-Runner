@@ -1,12 +1,10 @@
-using System;
 using Code.Runtime.Infrastructure.States;
 using Code.Runtime.Services.InputService;
-using UnityEditor;
 using UnityEngine;
 
 namespace Code.Runtime.Logic.PlayerSystem.States
 {
-    public abstract class InputState : IState, IDisposable
+    public abstract class InputState : IState
     {
         protected readonly PlayerStateMachine PlayerStateMachine;
         protected readonly IPlayerAnimator PlayerAnimator;
@@ -24,32 +22,20 @@ namespace Code.Runtime.Logic.PlayerSystem.States
             _inputService = inputService;
             PlayerAnimator = playerAnimator;
             PlayerStateMachine = playerStateMachine;
-            
+        }
+
+        public virtual void Enter()
+        {
             _inputService.OnJump += OnJump;
             _inputService.OnSliding += OnSliding;
         }
-
-        // public virtual void Enter()
-        // {
-        //     _inputService.OnJump += OnJump;
-        //     _inputService.OnSliding += OnSliding;
-        // }
-        //
-        // public virtual void Exit()
-        // {
-        //     _inputService.OnJump -= OnJump;
-        //     _inputService.OnSliding -= OnSliding;
-        // }
         
-        public abstract void Enter();
-        public abstract void Exit();
-
-        public void Dispose()
+        public virtual void Exit()
         {
             _inputService.OnJump -= OnJump;
             _inputService.OnSliding -= OnSliding;
         }
-
+        
         private void OnJump() =>
             PlayerStateMachine.Enter<JumpState>();
 

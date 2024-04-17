@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code.Runtime.Logic.PlayerSystem
 {
-    public class PlayerSideMovement : IDisposable
+    public class PlayerSideMovement
     {
         private readonly IInputService _inputService;
         private readonly Rigidbody _playerRigidbody;
@@ -22,15 +22,16 @@ namespace Code.Runtime.Logic.PlayerSystem
             
             _changeSideSpeed = playerConfig.ChangeSideSpeed;
             _sideMoveOffset = playerConfig.SideMoveOffset;
+        }
 
+        public void Subscribe()
+        {
             _inputService.OnLeftMove += MoveToLeft;
             _inputService.OnRightMove += MoveToRight;
         }
 
-        public void Dispose()
+        public void Unsubscribe()
         {
-            Debug.Log("Dispose");
-            
             _inputService.OnLeftMove -= MoveToLeft;
             _inputService.OnRightMove -= MoveToRight;
         }
