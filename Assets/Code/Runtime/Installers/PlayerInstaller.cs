@@ -18,7 +18,7 @@ namespace Code.Runtime.Installers
         {
             Container.BindInstance(playerConfig).AsSingle();
             
-            BindFollowPlayerCamera();
+            // BindFollowPlayerCamera();
 
             BindPlayerStateMachine();
 
@@ -27,6 +27,10 @@ namespace Code.Runtime.Installers
             BindPlayerAnimator();
             
             BindPlayer();
+
+            Container.Bind<PlayerSideMovement>().AsSingle();
+            
+            Container.Bind<PlayerStraightMovement>().AsSingle();
         }
 
         private void BindFollowPlayerCamera()
@@ -46,12 +50,12 @@ namespace Code.Runtime.Installers
 
         private void BindPlayerAnimator()
         {
-            Container.BindInterfacesTo<IPlayerAnimator>().FromInstance(playerAnimator).AsSingle();
+            Container.Bind<IPlayerAnimator>().FromInstance(playerAnimator).AsSingle();
         }
 
         private void BindPlayer()
         {
-            Container.BindInterfacesTo<Player>()
+            Container.Bind<IReadonlyPlayer>()
                 .FromInstance(player)
                 .AsSingle();
         }

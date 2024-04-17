@@ -4,9 +4,9 @@ namespace Code.Runtime.Logic.PlayerSystem.States
 {
     public class DeadState : IState
     {
-        private PlayerAnimator _playerAnimator;
+        private IPlayerAnimator _playerAnimator;
 
-        public DeadState(PlayerAnimator playerAnimator)
+        public DeadState(IPlayerAnimator playerAnimator)
         {
             _playerAnimator = playerAnimator;
         }

@@ -3,12 +3,11 @@ using Code.Runtime.Logic.PlayerSystem.States;
 using UnityEngine;
 using Zenject;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem
 {
     [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
     public class Player : MonoBehaviour, IReadonlyPlayer
     {
-        private const float ScaleFactor = 0.0001f;
         private const string ObstacleTag = "Obstacle";
         
         public Rigidbody Rigidbody { get; private set; }
@@ -17,11 +16,6 @@ namespace Code.Runtime.Logic
         private PlayerStateMachine _playerStateMachine;
         private PlayerStatesFactory _playerStatesFactory;
         
-        private PlayerSideMovement _playerSideMovement;
-
-        private float speedScale;
-        private bool isDead;
-
         private void Awake()
         {
             Rigidbody = GetComponent<Rigidbody>();
@@ -30,13 +24,9 @@ namespace Code.Runtime.Logic
 
         private void Start()
         {
-            // _playerSideMovement = new PlayerSideMovement(Rigidbody, _inputService,
-            //     playerConfig.SideMoveOffset, playerConfig.ChangeSideSpeed);
-            // _playerStateMachine = new PlayerStateMachine();
-
             RegisterStates();
             
-            _playerStateMachine.Enter<DeadState>();
+            _playerStateMachine.Enter<RunState>();
         }
 
         [Inject]
@@ -46,44 +36,25 @@ namespace Code.Runtime.Logic
             _playerStateMachine = playerStateMachine;
         }
 
+        private void Update() =>
+            _playerStateMachine.UpdateState();
+
         private void RegisterStates()
         {
             _playerStateMachine.RegisterState(_playerStatesFactory.Create<DeadState>());
-            
-            // _playerStateMachine.RegisterState(new RunState(_rigidbody, _inputService, _playerStateMachine, playerAnimator));
-            // _playerStateMachine.RegisterState(new JumpState(_rigidbody, _inputService, _playerStateMachine, 4f, playerAnimator));
-            // _playerStateMachine.RegisterState(new SlidingState(_rigidbody, _inputService, _playerStateMachine,
-            //     _boxCollider, 0.5f, playerAnimator));
-            // _playerStateMachine.RegisterState(new DeadState(playerAnimator));
-
-            // _playerStateMachine.Enter<RunState>();
-        }
-
-        public void Update()
-        {
-            if (isDead) return;
-
-            // _playerStateMachine.UpdateState();
-            // _playerSideMovement.UpdatePosition();
-
-            // transform.Translate(Vector3.forward * ((playerConfig.StartMoveSpeed + speedScale) * Time.deltaTime));
-
-            // speedScale += playerConfig.MoveSpeedScaler * ScaleFactor;
+            _playerStateMachine.RegisterState(_playerStatesFactory.Create<RunState>());
+            _playerStateMachine.RegisterState(_playerStatesFactory.Create<JumpState>());
+            _playerStateMachine.RegisterState(_playerStatesFactory.Create<SlidingState>());
         }
 
         public void OnTriggerEnter(Collider other)
         {
             GameObject obstacleGameObject = other.gameObject;
 
-            if (obstacleGameObject.CompareTag(ObstacleTag))
-            {
-                if (obstacleGameObject.TryGetComponent(out Obstacle obstacle))
-                {
-                    isDead = true;
-
-                    _playerStateMachine.Enter<DeadState>();
-                }
-            }
+            if (!obstacleGameObject.CompareTag(ObstacleTag)) return;
+            
+            if (obstacleGameObject.TryGetComponent(out Obstacle obstacle))
+                _playerStateMachine.Enter<DeadState>();
         }
     }
 }

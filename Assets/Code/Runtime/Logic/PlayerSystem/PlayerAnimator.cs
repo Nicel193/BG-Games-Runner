@@ -1,7 +1,6 @@
-using Code.Runtime.Logic.PlayerSystem;
 using UnityEngine;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem
 {
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimator : MonoBehaviour, IPlayerAnimator

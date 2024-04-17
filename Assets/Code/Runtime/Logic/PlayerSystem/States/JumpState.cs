@@ -1,49 +1,46 @@
-using Code.Runtime.Infrastructure.States;
+using Code.Runtime.Configs;
+using Code.Runtime.Logic.PlayerSystem;
+using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Services.InputService;
 using UnityEngine;
 
 namespace Code.Runtime.Logic
 {
-    public class JumpState : PlayerState, IUpdatebleState
+    public class JumpState : RunState
     {
         private float _jumpForce;
         private float _groundHeight;
-        private PlayerAnimator _playerAnimator;
-
-        public JumpState(Rigidbody playerRigidbody, IInputService inputService,
-            PlayerStateMachine playerStateMachine, float jumpForce, PlayerAnimator playerAnimator)
-            : base(playerRigidbody, inputService, playerStateMachine)
+        
+        public JumpState(IReadonlyPlayer player, IInputService inputService, IPlayerAnimator playerAnimator,
+            PlayerStateMachine playerStateMachine, PlayerConfig playerConfig) 
+            : base(player, inputService, playerAnimator, playerStateMachine)
         {
-            _playerAnimator = playerAnimator;
-            _jumpForce = jumpForce;
             _groundHeight = PlayerTransform.position.y;
+            _jumpForce = playerConfig.JumpForce;
         }
 
         public override void Enter()
         {
-            base.Enter();
-            
             PlayerRigidbody.isKinematic = false;
             PlayerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-            _playerAnimator.Jump(true);
+            PlayerAnimator.Jump(true);
         }
 
-        public void Update()
+        public override void Update()
         {
+            base.Update();
+            
             if (PlayerTransform.position.y < _groundHeight)
                 PlayerStateMachine.Enter<RunState>();
         }
 
         public override void Exit()
         {
-            base.Exit();
-            
-            // PlayerRigidbody.velocity = Vector3.zero;
             PlayerRigidbody.isKinematic = true;
             Vector3 transformPosition = PlayerTransform.position;
             transformPosition.y = _groundHeight;
             PlayerTransform.position = transformPosition;
-            _playerAnimator.Jump(false);
+            PlayerAnimator.Jump(false);
         }
     }
 }

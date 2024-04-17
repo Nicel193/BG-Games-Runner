@@ -1,50 +1,47 @@
-using Code.Runtime.Infrastructure.States;
+using Code.Runtime.Configs;
 using Code.Runtime.Services.InputService;
 using UnityEngine;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem.States
 {
-    public class SlidingState : PlayerState, IUpdatebleState
+    public class SlidingState : RunState
     {
-        private BoxCollider _playerCollider;
-        private Vector3 _startColliderSize;
+        private readonly Vector3 _startColliderSize;
+
         private float _slidingHeight;
         private float _slideTimer;
-        private PlayerAnimator _playerAnimator;
 
-        public SlidingState(Rigidbody playerRigidbody, IInputService inputService,
-            PlayerStateMachine playerStateMachine, BoxCollider playerCollider, float slidingHeight, PlayerAnimator playerAnimator)
-            : base(playerRigidbody, inputService, playerStateMachine)
+        public SlidingState(IReadonlyPlayer player, IInputService inputService,
+            IPlayerAnimator playerAnimator, PlayerStateMachine playerStateMachine, PlayerConfig playerConfig)
+            : base(player, inputService, playerAnimator, playerStateMachine)
         {
-            _playerAnimator = playerAnimator;
-            _playerCollider = playerCollider;
-            _slidingHeight = slidingHeight;
-            _startColliderSize = playerCollider.size;
+            _startColliderSize = PlayerBoxCollider.size;
+            _slidingHeight = playerConfig.SlidingHeight;
         }
+
 
         public override void Enter()
         {
-            base.Enter();
-            
-            _playerCollider.size = new Vector3(_playerCollider.size.x, _slidingHeight, _playerCollider.size.z);
-            _playerAnimator.Sliding(true);
+            Vector3 size = PlayerBoxCollider.size;
+            PlayerBoxCollider.size = new Vector3(size.x, _slidingHeight, size.z);
+            PlayerAnimator.Sliding(true);
         }
 
-        public override void Exit()
+        public override void Update()
         {
-            base.Exit();
+            base.Update(); 
             
-            _slideTimer = 0f;
-            _playerCollider.size = _startColliderSize;
-            _playerAnimator.Sliding(false);
-        }
-
-        public void Update()
-        {
             _slideTimer += Time.deltaTime;
 
             if (_slideTimer >= 1f)
                 PlayerStateMachine.Enter<RunState>();
+        }
+
+        public override void Exit()
+        {
+            _slideTimer = 0f;
+            PlayerBoxCollider.size = _startColliderSize;
+            PlayerAnimator.Sliding(false);
         }
     }
 }

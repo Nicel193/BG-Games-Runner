@@ -1,35 +1,38 @@
 using System;
+using Code.Runtime.Configs;
 using Code.Runtime.Services.InputService;
 using UnityEngine;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem
 {
     public class PlayerSideMovement : IDisposable
     {
-        private readonly IInputService InputService;
-        private readonly Rigidbody PlayerRigidbody;
+        private readonly IInputService _inputService;
+        private readonly Rigidbody _playerRigidbody;
         private readonly float _sideMoveOffset;
 
-        private Transform PlayerTransform => PlayerRigidbody.transform;
+        private Transform PlayerTransform => _playerRigidbody.transform;
         private float _playerXPosition;
         private float _changeSideSpeed;
 
-        public PlayerSideMovement(Rigidbody playerRigidbody, IInputService inputService,
-            float sideMoveOffset, float changeSideSpeed)
+        public PlayerSideMovement(IReadonlyPlayer player, IInputService inputService, PlayerConfig playerConfig)
         {
-            _changeSideSpeed = changeSideSpeed;
-            PlayerRigidbody = playerRigidbody;
-            InputService = inputService;
-            _sideMoveOffset = sideMoveOffset;
+            _playerRigidbody = player.Rigidbody;
+            _inputService = inputService;
+            
+            _changeSideSpeed = playerConfig.ChangeSideSpeed;
+            _sideMoveOffset = playerConfig.SideMoveOffset;
 
-            InputService.OnLeftMove += MoveToLeft;
-            InputService.OnRightMove += MoveToRight;
+            _inputService.OnLeftMove += MoveToLeft;
+            _inputService.OnRightMove += MoveToRight;
         }
 
         public void Dispose()
         {
-            InputService.OnLeftMove -= MoveToLeft;
-            InputService.OnRightMove -= MoveToRight;
+            Debug.Log("Dispose");
+            
+            _inputService.OnLeftMove -= MoveToLeft;
+            _inputService.OnRightMove -= MoveToRight;
         }
 
         public void UpdatePosition()

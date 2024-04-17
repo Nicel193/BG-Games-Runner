@@ -16,6 +16,8 @@ MonoBehaviour:
   MoveSpeedScaler: 2
   SideMoveOffset: 1.6
   ChangeSideSpeed: 5
+  JumpForce: 4
+  SlidingHeight: 0.5
   SmoothSpeed: 5
   Height: 2.3
   ZOffset: -5.5

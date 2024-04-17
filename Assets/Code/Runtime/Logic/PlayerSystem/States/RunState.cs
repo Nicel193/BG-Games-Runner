@@ -1,31 +1,32 @@
+using Code.Runtime.Infrastructure.States;
 using Code.Runtime.Services.InputService;
-using UnityEngine;
+using Zenject;
 
-namespace Code.Runtime.Logic
+namespace Code.Runtime.Logic.PlayerSystem.States
 {
-    public class RunState : PlayerState
+    public class RunState : InputState, IUpdatebleState
     {
-        private PlayerAnimator _playerAnimator;
+        [Inject] private PlayerSideMovement _sideMovement;
+        [Inject] private PlayerStraightMovement _straightMovement;
 
-        public RunState(Rigidbody playerRigidbody, IInputService inputService,
-            PlayerStateMachine playerStateMachine, PlayerAnimator playerAnimator) :
-            base(playerRigidbody, inputService, playerStateMachine)
-        {
-            _playerAnimator = playerAnimator;
-        }
+        public RunState(IReadonlyPlayer player, IInputService inputService,
+            IPlayerAnimator playerAnimator, PlayerStateMachine playerStateMachine)
+            : base(player, inputService, playerAnimator, playerStateMachine) { }
 
         public override void Enter()
         {
-            base.Enter();
-            
-            _playerAnimator.Run(true);
+            PlayerAnimator.Run(true);
+        }
+
+        public virtual void Update()
+        {
+            _sideMovement.UpdatePosition();
+            _straightMovement.UpdatePosition();
         }
 
         public override void Exit()
         {
-            base.Exit();
-            
-            _playerAnimator.Run(false);
+            PlayerAnimator.Run(false);
         }
     }
 }
