@@ -33,5 +33,5 @@ MonoBehaviour:
   - {fileID: 1080289179552282811, guid: b718c14c1e836cc4a8ca91d61382c504, type: 3}
   - {fileID: 4126236397975840481, guid: 22facfbe232a90b45b681c638f2e490d, type: 3}
   InitialChunkCount: 10
-  InitialObstacleCount: 5
+  InitialObstacleCount: 10
   SpawnDistance: 80

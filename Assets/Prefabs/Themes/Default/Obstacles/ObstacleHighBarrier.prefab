@@ -185,3 +185,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ObstacleType>k__BackingField: -1
+  <ObstacleSize>k__BackingField: 2

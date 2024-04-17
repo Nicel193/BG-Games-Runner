@@ -2,7 +2,6 @@
 {
     public interface IObjectPool<T>
     {
-        void Initialize();
         T Get();
         void Return(T item);
     }

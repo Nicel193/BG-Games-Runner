@@ -19,13 +19,20 @@ namespace Code.Runtime.Infrastructure.ObjectPool
 
         public Transform CreatePoolContainer<T>(T @object) where T : Component
         {
-            Transform poolContainer = new GameObject($"{@object.name} ({@object.GetType()})").transform;
+            string poolName = $"{@object.name} ({@object.GetType()})";
+
+            return CreatePoolContainer(poolName);
+        }
+
+        public Transform CreatePoolContainer(string poolName)
+        {
+            Transform poolContainer = new GameObject(poolName).transform;
 
             poolContainer.SetParent(_objectPools);
 
             return poolContainer;
         }
-        
+
         public void AddInPoolContainer<T>(T @object, Transform poolContainer) where T : Component =>
             @object.transform.SetParent(poolContainer);
     }
