@@ -21,6 +21,8 @@ namespace Code.Runtime.Logic
 
         public override void Enter()
         {
+            base.Enter();
+            
             PlayerRigidbody.isKinematic = false;
             PlayerRigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             _playerAnimator.Jump(true);
@@ -34,6 +36,8 @@ namespace Code.Runtime.Logic
 
         public override void Exit()
         {
+            base.Exit();
+            
             // PlayerRigidbody.velocity = Vector3.zero;
             PlayerRigidbody.isKinematic = true;
             Vector3 transformPosition = PlayerTransform.position;

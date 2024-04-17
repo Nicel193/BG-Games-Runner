@@ -13,7 +13,8 @@ namespace Code.Runtime.Logic
         private PlayerAnimator _playerAnimator;
 
         public SlidingState(Rigidbody playerRigidbody, IInputService inputService,
-            PlayerStateMachine playerStateMachine, BoxCollider playerCollider, float slidingHeight, PlayerAnimator playerAnimator) : base(playerRigidbody, inputService, playerStateMachine)
+            PlayerStateMachine playerStateMachine, BoxCollider playerCollider, float slidingHeight, PlayerAnimator playerAnimator)
+            : base(playerRigidbody, inputService, playerStateMachine)
         {
             _playerAnimator = playerAnimator;
             _playerCollider = playerCollider;
@@ -23,12 +24,16 @@ namespace Code.Runtime.Logic
 
         public override void Enter()
         {
+            base.Enter();
+            
             _playerCollider.size = new Vector3(_playerCollider.size.x, _slidingHeight, _playerCollider.size.z);
             _playerAnimator.Sliding(true);
         }
 
         public override void Exit()
         {
+            base.Exit();
+            
             _slideTimer = 0f;
             _playerCollider.size = _startColliderSize;
             _playerAnimator.Sliding(false);

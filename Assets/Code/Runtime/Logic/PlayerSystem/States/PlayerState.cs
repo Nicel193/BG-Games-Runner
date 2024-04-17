@@ -18,9 +18,18 @@ namespace Code.Runtime.Logic
             PlayerStateMachine = playerStateMachine;
             PlayerRigidbody = playerRigidbody;
             _inputService = inputService;
+        }
 
+        public virtual void Enter()
+        {
             _inputService.OnJump += OnJump;
             _inputService.OnSliding += OnSliding;
+        }
+
+        public virtual void Exit()
+        {
+            _inputService.OnJump -= OnJump;
+            _inputService.OnSliding -= OnSliding;
         }
 
         public void Dispose()
@@ -29,13 +38,10 @@ namespace Code.Runtime.Logic
             _inputService.OnSliding -= OnSliding;
         }
 
-        private void OnSliding() =>
-            PlayerStateMachine.Enter<SlidingState>();
-
         private void OnJump() =>
             PlayerStateMachine.Enter<JumpState>();
 
-        public abstract void Exit();
-        public abstract void Enter();
+        private void OnSliding() =>
+            PlayerStateMachine.Enter<SlidingState>();
     }
 }

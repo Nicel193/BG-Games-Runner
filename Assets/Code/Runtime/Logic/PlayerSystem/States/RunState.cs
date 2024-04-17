@@ -16,11 +16,15 @@ namespace Code.Runtime.Logic
 
         public override void Enter()
         {
+            base.Enter();
+            
             _playerAnimator.Run(true);
         }
 
         public override void Exit()
         {
+            base.Exit();
+            
             _playerAnimator.Run(false);
         }
     }

@@ -1,4 +1,7 @@
+using System;
 using Code.Runtime.Configs;
+using Code.Runtime.Logic.Map;
+using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Services.InputService;
 using UnityEngine;
 using Zenject;
@@ -9,7 +12,8 @@ namespace Code.Runtime.Logic
     public class Player : MonoBehaviour
     {
         private const float ScaleFactor = 0.0001f;
-        
+        private const string ObstacleTag = "Obstacle";
+
         [SerializeField] private PlayerConfig playerConfig;
         [SerializeField] private PlayerAnimator playerAnimator;
 
@@ -21,6 +25,7 @@ namespace Code.Runtime.Logic
         private BoxCollider _boxCollider;
 
         private float speedScale;
+        private bool isDead;
 
         private void Awake()
         {
@@ -49,18 +54,36 @@ namespace Code.Runtime.Logic
             _playerStateMachine.RegisterState(new JumpState(_rigidbody, _inputService, _playerStateMachine, 3f, playerAnimator));
             _playerStateMachine.RegisterState(new SlidingState(_rigidbody, _inputService, _playerStateMachine,
                 _boxCollider, 0.5f, playerAnimator));
+            _playerStateMachine.RegisterState(new DeadState(playerAnimator));
 
             _playerStateMachine.Enter<RunState>();
         }
 
         public void Update()
         {
+            if (isDead) return;
+
             _playerStateMachine.UpdateState();
             _playerSideMovement.UpdatePosition();
 
             transform.Translate(Vector3.forward * ((playerConfig.StartMoveSpeed + speedScale) * Time.deltaTime));
 
             speedScale += playerConfig.MoveSpeedScaler * ScaleFactor;
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            GameObject obstacleGameObject = other.gameObject;
+
+            if (obstacleGameObject.CompareTag(ObstacleTag))
+            {
+                if (obstacleGameObject.TryGetComponent(out Obstacle obstacle))
+                {
+                    isDead = true;
+
+                    _playerStateMachine.Enter<DeadState>();
+                }
+            }
         }
     }
 }
