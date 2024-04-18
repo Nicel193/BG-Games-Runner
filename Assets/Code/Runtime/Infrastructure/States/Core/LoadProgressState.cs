@@ -33,7 +33,7 @@ namespace Code.Runtime.Infrastructure.States.Core
 
             // InteractorsInitializer.Initialize(playerProgress, _interactorContainer);
             
-            _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Authorization.ToString());
+            _gameStateMachine.Enter<AuthState>();
         }
 
         public void Exit()

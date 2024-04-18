@@ -15,7 +15,6 @@ namespace Code.Runtime.Infrastructure.States.Core
 
         public void Enter(string sceneName)
         {
-
             _sceneLoader.Load(sceneName,
                 () => { _logService.Log($"Loaded: {sceneName} (Scene)"); });
         }

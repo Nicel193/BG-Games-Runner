@@ -12,13 +12,12 @@ namespace Code.Runtime.Services.FirebaseService
         public const string CompletedLogin = "Completed Login";
         public const string CompletedRegistration = "Completed Registration";
 
-        public event Action OnUserLogout;
+        public event Action OnUserSignOut;
         public bool IsUserAuth { get; private set; }
 
         private readonly ILogService _logService;
-        
-        public FirebaseAuth _auth;
-        private FirebaseUser user;
+        private FirebaseAuth _auth;
+        private FirebaseUser _user;
 
         public AuthFirebaseService(ILogService logService) =>
             _logService = logService;
@@ -35,20 +34,20 @@ namespace Code.Runtime.Services.FirebaseService
 
         private void AuthStateChanged(object sender, EventArgs eventArgs)
         {
-            if (_auth.CurrentUser != user)
+            if (_auth.CurrentUser != _user)
             {
-                bool signedIn = user != _auth.CurrentUser && _auth.CurrentUser != null;
-                if (!signedIn && user != null)
+                bool signedIn = _user != _auth.CurrentUser && _auth.CurrentUser != null;
+                if (!signedIn && _user != null)
                 {
-                    _logService.Log("Signed out " + user.UserId);
+                    _logService.Log("Signed out " + _user.UserId);
                     
-                    OnUserLogout?.Invoke();
+                    OnUserSignOut?.Invoke();
                 }
 
-                user = _auth.CurrentUser;
+                _user = _auth.CurrentUser;
                 if (signedIn)
                 {
-                    _logService.Log("Signed in " + user.UserId);
+                    _logService.Log("Signed in " + _user.UserId);
                 }
 
                 IsUserAuth = signedIn;
@@ -146,6 +145,12 @@ namespace Code.Runtime.Services.FirebaseService
             }
 
             return CompletedRegistration;
+        }
+        
+        public void SignOut()
+        {
+            _auth.SignOut();
+            _logService.Log("Calling SignOut");
         }
 
         public void Dispose()

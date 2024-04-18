@@ -936,7 +936,7 @@ GameObject:
   - component: {fileID: 936078525}
   - component: {fileID: 936078524}
   m_Layer: 5
-  m_Name: LogoutButton
+  m_Name: SignOutButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1364,6 +1364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startGameButton: {fileID: 158429907}
+  signOutGameButton: {fileID: 936078524}
 --- !u!1001 &1847679694
 PrefabInstance:
   m_ObjectHideFlags: 0
