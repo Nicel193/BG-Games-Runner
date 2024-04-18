@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Code.Runtime.Repositories;
 using Code.Runtime.Services.AuthService;
@@ -40,6 +41,24 @@ namespace Code.Runtime.Services.DatabaseService
             {
                 Name = _authService.UserName,
             };
+        }
+        
+        public async Task<List<UserRepository>> GetTopPlayersAsync(int limit)
+        {
+            Query query = _firebaseFirestore.Collection(UsersCollection)
+                .OrderByDescending("score")
+                .Limit(limit);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            List<UserRepository> topPlayers = new List<UserRepository>();
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                UserRepository player = documentSnapshot.ConvertTo<UserRepository>();
+                topPlayers.Add(player);
+            }
+
+            return topPlayers;
         }
     }
 }
