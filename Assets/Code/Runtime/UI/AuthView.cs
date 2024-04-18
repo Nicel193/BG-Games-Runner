@@ -1,6 +1,6 @@
 using Code.Runtime.Infrastructure;
 using Code.Runtime.Infrastructure.States;
-using Code.Runtime.Services.FirebaseService;
+using Code.Runtime.Services.AuthService;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +31,7 @@ namespace Code.Runtime.UI
         [SerializeField] private Button toLoginFormButton;
 
         private ISceneLoader _sceneLoader;
-        private IAuthFirebaseService _authFirebaseService;
+        private IAuthService _authService;
 
         private void Awake()
         {
@@ -49,15 +49,15 @@ namespace Code.Runtime.UI
         }
 
         [Inject]
-        private void Construct(ISceneLoader sceneLoader, IAuthFirebaseService authFirebaseService)
+        private void Construct(ISceneLoader sceneLoader, IAuthService authService)
         {
-            _authFirebaseService = authFirebaseService;
+            _authService = authService;
             _sceneLoader = sceneLoader;
         }
 
         private async void Register()
         {
-            string registerMessage = await _authFirebaseService.Register(
+            string registerMessage = await _authService.Register(
                 emailNameInputField.text,
                 passwordNameInputField.text,
                 confirmPasswordNameInputField.text,
@@ -75,7 +75,7 @@ namespace Code.Runtime.UI
 
         private async void Login()
         {
-            string loginMessage = await _authFirebaseService.Login(
+            string loginMessage = await _authService.Login(
                 loginEmailNameInputField.text,
                 loginPasswordNameInputField.text);
 
