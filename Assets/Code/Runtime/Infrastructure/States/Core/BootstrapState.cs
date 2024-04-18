@@ -1,4 +1,5 @@
 ﻿using Code.Runtime.Infrastructure.StateMachines;
+using Code.Runtime.Services.FirebaseService;
 
 namespace Code.Runtime.Infrastructure.States.Core
 {
@@ -6,15 +7,21 @@ namespace Code.Runtime.Infrastructure.States.Core
     {
         private readonly ISceneLoader _sceneLoader;
         private readonly GameStateMachine _gameStateMachine;
+        private readonly IAuthFirebaseService _authFirebaseService;
 
-        public BootstrapState(ISceneLoader sceneLoader, GameStateMachine gameStateMachine)
+        public BootstrapState(ISceneLoader sceneLoader, GameStateMachine gameStateMachine, IAuthFirebaseService authFirebaseService)
         {
+            _authFirebaseService = authFirebaseService;
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
         }
 
-        public void Enter()
+        public async void Enter()
         {
+            _authFirebaseService.Initialize();
+            
+            await _authFirebaseService.Register("etwte@asdasd.com", "12321Sd", "12321Sd", "Test");
+            
             _sceneLoader.Load(SceneName.Bootstrap.ToString(), ToLoadProgressState);
         }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "418796270038",
+    "project_id": "bg-games-runner",
+    "storage_bucket": "bg-games-runner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418796270038:android:dfc9c5c9c35b962bc87477",
+        "android_client_info": {
+          "package_name": "com.NGame.Runner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiguJrAbJuKbfgr84yOOOLJj-dAwZIVFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
