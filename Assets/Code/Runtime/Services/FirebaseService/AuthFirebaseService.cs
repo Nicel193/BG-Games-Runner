@@ -9,57 +9,60 @@ namespace Code.Runtime.Services.FirebaseService
 {
     public class AuthFirebaseService : IDisposable, IAuthFirebaseService
     {
-        public const string CompleteRegistration = "Complete Registration";
-        
-        private FirebaseAuth auth;
-        private FirebaseUser user;
+        public const string CompletedLogin = "Completed Login";
+        public const string CompletedRegistration = "Completed Registration";
+
+        public event Action OnUserLogout;
+        public bool IsUserAuth { get; private set; }
 
         private readonly ILogService _logService;
+        
+        public FirebaseAuth _auth;
+        private FirebaseUser user;
 
-        public AuthFirebaseService(ILogService logService)
-        {
+        public AuthFirebaseService(ILogService logService) =>
             _logService = logService;
-        }
 
         public void Initialize()
         {
             _logService.Log("Setting up Firebase Auth");
-            auth = FirebaseAuth.DefaultInstance;
-            auth.StateChanged += AuthStateChanged;
+            
+            _auth = FirebaseAuth.DefaultInstance;
+            _auth.StateChanged += AuthStateChanged;
 
             AuthStateChanged(this, null);
         }
 
         private void AuthStateChanged(object sender, EventArgs eventArgs)
         {
-            if (auth.CurrentUser != user)
+            if (_auth.CurrentUser != user)
             {
-                bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
+                bool signedIn = user != _auth.CurrentUser && _auth.CurrentUser != null;
                 if (!signedIn && user != null)
                 {
                     _logService.Log("Signed out " + user.UserId);
+                    
+                    OnUserLogout?.Invoke();
                 }
 
-                user = auth.CurrentUser;
+                user = _auth.CurrentUser;
                 if (signedIn)
                 {
                     _logService.Log("Signed in " + user.UserId);
                 }
+
+                IsUserAuth = signedIn;
             }
         }
 
-        private async Task Login(string _email, string _password)
+        public async Task<string> Login(string email, string password)
         {
             try
             {
-                // Call the Firebase auth signin function passing the email and password
-                AuthResult authResult = await auth.SignInWithEmailAndPasswordAsync(_email, _password);
+                AuthResult authResult = await _auth.SignInWithEmailAndPasswordAsync(email, password);
 
-                // User is now logged in
                 Debug.LogFormat("User signed in successfully: {0} ({1})", authResult.User.DisplayName,
                     authResult.User.Email);
-                // warningLoginText.text = "";
-                // confirmLoginText.text = "Logged In";
             }
             catch (FirebaseException firebaseEx)
             {
@@ -85,15 +88,14 @@ namespace Code.Runtime.Services.FirebaseService
                         break;
                 }
 
-                Debug.Log(message);
-                // warningLoginText.text = message;
+                return message;
             }
             catch (Exception ex)
             {
-                // If there are errors handle them
-                Debug.LogWarning($"Failed to login with {ex}");
-                // warningLoginText.text = "Login Failed!";
+                _logService.LogWarning($"Failed to login with {ex}");
             }
+            
+            return CompletedLogin;
         }
 
         public async Task<string> Register(string email, string password, string repeatedPassword, string username)
@@ -106,7 +108,7 @@ namespace Code.Runtime.Services.FirebaseService
 
             try
             {
-                var authResult = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
+                var authResult = await _auth.CreateUserWithEmailAndPasswordAsync(email, password);
 
                 if (authResult != null)
                 {
@@ -140,16 +142,16 @@ namespace Code.Runtime.Services.FirebaseService
             }
             catch (Exception ex)
             {
-                return $"Failed to register task with {ex}";
+                _logService.LogWarning($"Failed to register task with {ex}");
             }
 
-            return CompleteRegistration;
+            return CompletedRegistration;
         }
 
         public void Dispose()
         {
-            auth.StateChanged -= AuthStateChanged;
-            auth = null;
+            _auth.StateChanged -= AuthStateChanged;
+            _auth = null;
         }
     }
 }

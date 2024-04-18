@@ -1,4 +1,3 @@
-using System;
 using Code.Runtime.Infrastructure;
 using Code.Runtime.Infrastructure.States;
 using Code.Runtime.Services.FirebaseService;
@@ -37,6 +36,7 @@ namespace Code.Runtime.UI
         private void Awake()
         {
             registerButton.onClick.AddListener(Register);
+            loginButton.onClick.AddListener(Login);
             toRegistrationFormButton.onClick.AddListener(ToRegistrationForm);
             toLoginFormButton.onClick.AddListener(ToLoginForm);
         }
@@ -45,6 +45,7 @@ namespace Code.Runtime.UI
         {
             registerButton.onClick.RemoveListener(Register);
             toRegistrationFormButton.onClick.RemoveListener(ToRegistrationForm);
+            toLoginFormButton.onClick.RemoveListener(ToLoginForm);
         }
 
         [Inject]
@@ -61,8 +62,8 @@ namespace Code.Runtime.UI
                 passwordNameInputField.text,
                 confirmPasswordNameInputField.text,
                 userNameInputField.text);
-
-            if (registerMessage == AuthFirebaseService.CompleteRegistration)
+            
+            if (registerMessage == AuthFirebaseService.CompletedRegistration)
             {
                 _sceneLoader.Load(SceneName.Gameplay.ToString());
 
@@ -70,6 +71,22 @@ namespace Code.Runtime.UI
             }
 
             errorMessage.text = registerMessage;
+        }
+
+        private async void Login()
+        {
+            string loginMessage = await _authFirebaseService.Login(
+                loginEmailNameInputField.text,
+                loginPasswordNameInputField.text);
+
+            if (loginMessage == AuthFirebaseService.CompletedLogin)
+            {
+                _sceneLoader.Load(SceneName.Gameplay.ToString());
+                
+                return;
+            }
+
+            errorMessage.text = loginMessage;
         }
 
         private void ToLoginForm() =>
