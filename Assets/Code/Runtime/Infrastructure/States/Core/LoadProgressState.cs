@@ -33,12 +33,7 @@ namespace Code.Runtime.Infrastructure.States.Core
 
             // InteractorsInitializer.Initialize(playerProgress, _interactorContainer);
             
-#if UNITY_EDITOR
-            _sceneLoader.Load(GameRunner.StartScene);
-            // _gameStateMachine.Enter<LoadSceneState, string>(GameRunner.StartScene);
-#else
-            _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Menu.ToString());
-#endif
+            _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Authorization.ToString());
         }
 
         public void Exit()

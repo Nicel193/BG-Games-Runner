@@ -3,6 +3,7 @@
     public enum SceneName
     {
         Bootstrap = 0,
-        Gameplay = 1
+        Authorization = 1,
+        Gameplay = 2
     }
 }

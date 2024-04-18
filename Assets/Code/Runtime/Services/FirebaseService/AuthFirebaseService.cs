@@ -9,6 +9,8 @@ namespace Code.Runtime.Services.FirebaseService
 {
     public class AuthFirebaseService : IDisposable, IAuthFirebaseService
     {
+        public const string CompleteRegistration = "Complete Registration";
+        
         private FirebaseAuth auth;
         private FirebaseUser user;
 
@@ -24,7 +26,7 @@ namespace Code.Runtime.Services.FirebaseService
             _logService.Log("Setting up Firebase Auth");
             auth = FirebaseAuth.DefaultInstance;
             auth.StateChanged += AuthStateChanged;
-            
+
             AuthStateChanged(this, null);
         }
 
@@ -45,22 +47,23 @@ namespace Code.Runtime.Services.FirebaseService
                 }
             }
         }
-        
+
         private async Task Login(string _email, string _password)
         {
             try
             {
                 // Call the Firebase auth signin function passing the email and password
                 AuthResult authResult = await auth.SignInWithEmailAndPasswordAsync(_email, _password);
-        
+
                 // User is now logged in
-                Debug.LogFormat("User signed in successfully: {0} ({1})", authResult.User.DisplayName, authResult.User.Email);
+                Debug.LogFormat("User signed in successfully: {0} ({1})", authResult.User.DisplayName,
+                    authResult.User.Email);
                 // warningLoginText.text = "";
                 // confirmLoginText.text = "Logged In";
             }
             catch (FirebaseException firebaseEx)
             {
-                AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
+                AuthError errorCode = (AuthError) firebaseEx.ErrorCode;
 
                 string message = "Login Failed!";
                 switch (errorCode)
@@ -93,69 +96,54 @@ namespace Code.Runtime.Services.FirebaseService
             }
         }
 
-        public async Task Register(string email, string password, string repeatedPassword, string username)
+        public async Task<string> Register(string email, string password, string repeatedPassword, string username)
         {
             if (username == "")
+                return "Missing Username";
+
+            if (password != repeatedPassword) 
+                return "Password Does Not Match!";
+
+            try
             {
-                Debug.Log("Missing Username");
-                //If the username field is blank show a warning
-                // warningRegisterText.text = "Missing Username";
-            }
-            else if (password != repeatedPassword)
-            {
-                Debug.Log("Password Does Not Match!");
-                //If the password does not match show a warning
-                // warningRegisterText.text = "Password Does Not Match!";
-            }
-            else
-            {
-                try
+                var authResult = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
+
+                if (authResult != null)
                 {
-                    var authResult = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
+                    UserProfile profile = new UserProfile {DisplayName = username};
 
-                    if (authResult != null)
-                    {
-                        UserProfile profile = new UserProfile {DisplayName = username};
-                        
-                        await authResult.User.UpdateUserProfileAsync(profile);
-
-                        // Username is now set, return to login screen
-                        // UIManager.instance.LoginScreen();
-                        // warningRegisterText.text = "";
-                    }
-                }
-                catch (FirebaseException firebaseEx)
-                {
-                    AuthError errorCode = (AuthError) firebaseEx.ErrorCode;
-
-                    string message = "Register Failed!";
-                    switch (errorCode)
-                    {
-                        case AuthError.MissingEmail:
-                            message = "Missing Email";
-                            break;
-                        case AuthError.MissingPassword:
-                            message = "Missing Password";
-                            break;
-                        case AuthError.WeakPassword:
-                            message = "Weak Password";
-                            break;
-                        case AuthError.EmailAlreadyInUse:
-                            message = "Email Already In Use";
-                            break;
-                    }
-
-                    Debug.LogError(message);
-
-                    // warningRegisterText.text = message;
-                }
-                catch (Exception ex)
-                {
-                    // If there are errors handle them
-                    Debug.LogWarning($"Failed to register task with {ex}");
-                    // warningRegisterText.text = "Registration Failed!";
+                    await authResult.User.UpdateUserProfileAsync(profile);
                 }
             }
+            catch (FirebaseException firebaseEx)
+            {
+                AuthError errorCode = (AuthError) firebaseEx.ErrorCode;
+
+                string message = "Register Failed!";
+                switch (errorCode)
+                {
+                    case AuthError.MissingEmail:
+                        message = "Missing Email";
+                        break;
+                    case AuthError.MissingPassword:
+                        message = "Missing Password";
+                        break;
+                    case AuthError.WeakPassword:
+                        message = "Weak Password";
+                        break;
+                    case AuthError.EmailAlreadyInUse:
+                        message = "Email Already In Use";
+                        break;
+                }
+
+                return message;
+            }
+            catch (Exception ex)
+            {
+                return $"Failed to register task with {ex}";
+            }
+
+            return CompleteRegistration;
         }
 
         public void Dispose()
