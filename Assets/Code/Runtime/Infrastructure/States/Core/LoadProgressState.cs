@@ -1,37 +1,31 @@
 ﻿using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Repositories;
+using Code.Runtime.Services.AuthService;
+using Code.Runtime.Services.DatabaseService;
 
 namespace Code.Runtime.Infrastructure.States.Core
 {
     public class LoadProgressState : IState
     {
-        private readonly ISceneLoader _sceneLoader;
         private readonly GameStateMachine _gameStateMachine;
         private readonly IInteractorContainer _interactorContainer;
+        private readonly IDatabaseService _databaseService;
+        private IAuthService _authService;
 
         LoadProgressState(GameStateMachine gameStateMachine, IInteractorContainer interactorContainer,
-            ISceneLoader sceneLoader)
+            IDatabaseService databaseService, IAuthService authService)
         {
+            _authService = authService;
+            _databaseService = databaseService;
             _gameStateMachine = gameStateMachine;
             _interactorContainer = interactorContainer;
-            _sceneLoader = sceneLoader;
         }
 
-        public void Enter()
+        public async void Enter()
         {
-            // PlayerProgress playerProgress = new PlayerProgress();
+            PlayerProgress playerProgress = new PlayerProgress();
 
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Blue].ChipsScore[21] = 12;
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Blue].CellsData[20].Score = 65;
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Blue].CellsData[5].CellType = CellType.Protection;
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Blue].CellsData[13].Score = 1;
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Blue].RemainingChips = 0;
-            
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Red].CellsData[10].Score = 12;
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Red].ChipsScore[11] = 12;
-            // playerProgress.GameFieldRepository.ChipsData[ChipColor.Red].RemainingChips = 0;
-
-            // InteractorsInitializer.Initialize(playerProgress, _interactorContainer);
+            playerProgress._userRepository = await _databaseService.GetUserDataAsync(_authService.UserId);
             
             _gameStateMachine.Enter<AuthState>();
         }

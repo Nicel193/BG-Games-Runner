@@ -20,17 +20,7 @@ namespace Code.Runtime.Infrastructure.States.Core
         public void Enter()
         {
             _authService.Initialize();
-
-            FirebaseFirestore firebaseFirestore = FirebaseFirestore.DefaultInstance;
-
-            // UserData userData = new UserData()
-            // {
-            //     Name = _authService.UserName,
-            //     Score = 999,
-            // };
-            //
-            // firebaseFirestore.Document($"Test/{_authService.UserId}").SetAsync(userData);
-
+            
             _sceneLoader.Load(SceneName.Bootstrap.ToString(), ToLoadProgressState);
         }
 
@@ -41,14 +31,4 @@ namespace Code.Runtime.Infrastructure.States.Core
         {
         }
     }
-
-   [FirestoreData]
-   public struct UserData
-   {
-       [FirestoreProperty]
-       public string Name { get; set; }
-       
-       [FirestoreProperty]
-       public int Score { get; set; }
-   }
 }

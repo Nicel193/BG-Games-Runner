@@ -3,6 +3,7 @@ using Code.Runtime.Infrastructure.Bootstrappers;
 using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Interactors;
 using Code.Runtime.Services.AuthService;
+using Code.Runtime.Services.DatabaseService;
 using Code.Runtime.Services.InputService;
 using Code.Runtime.Services.LogService;
 using Zenject;
@@ -30,6 +31,13 @@ namespace Code.Runtime.Installers
             BindInputService();
 
             BindFirebaseService();
+
+            BindFirestoreDatabaseService();
+        }
+
+        private void BindFirestoreDatabaseService()
+        {
+            Container.BindInterfacesTo<FirestoreDatabaseService>().AsSingle();
         }
 
         private void BindFirebaseService()
