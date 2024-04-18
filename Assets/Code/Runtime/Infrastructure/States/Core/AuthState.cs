@@ -18,7 +18,7 @@ namespace Code.Runtime.Infrastructure.States.Core
         {
             if (_authService.IsUserAuth)
             {
-                _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Gameplay.ToString());
+                _gameStateMachine.Enter<LoadProgressState>();
             }
             else
             {

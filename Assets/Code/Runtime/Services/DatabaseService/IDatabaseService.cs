@@ -6,6 +6,6 @@ namespace Code.Runtime.Services.DatabaseService
     public interface IDatabaseService
     {
         Task SaveUserDataAsync(string userId, UserRepository userData);
-        Task<UserRepository> GetUserDataAsync(string userId);
+        Task<UserRepository> GetUserDataAsync(string userId, string userName);
     }
 }

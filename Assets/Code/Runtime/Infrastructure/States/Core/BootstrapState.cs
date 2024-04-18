@@ -25,7 +25,7 @@ namespace Code.Runtime.Infrastructure.States.Core
         }
 
         private void ToLoadProgressState() =>
-            _gameStateMachine.Enter<LoadProgressState>();
+            _gameStateMachine.Enter<AuthState>();
 
         public void Exit()
         {

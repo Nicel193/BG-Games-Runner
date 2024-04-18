@@ -11,11 +11,9 @@ namespace Code.Runtime.Services.DatabaseService
         private const string UsersCollection = "users";
         
         private FirebaseFirestore _firebaseFirestore;
-        private IAuthService _authService;
 
-        public FirestoreDatabaseService(IAuthService authService)
+        public FirestoreDatabaseService()
         {
-            _authService = authService;
             _firebaseFirestore = FirebaseFirestore.DefaultInstance;
         }
 
@@ -26,7 +24,7 @@ namespace Code.Runtime.Services.DatabaseService
             await docRef.SetAsync(userData);
         }
 
-        public async Task<UserRepository> GetUserDataAsync(string userId)
+        public async Task<UserRepository> GetUserDataAsync(string userId, string userName)
         {
             DocumentReference docRef = _firebaseFirestore.Collection(UsersCollection).Document(userId);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
@@ -39,7 +37,7 @@ namespace Code.Runtime.Services.DatabaseService
 
             return new UserRepository()
             {
-                Name = _authService.UserName,
+                Name = userName,
             };
         }
         

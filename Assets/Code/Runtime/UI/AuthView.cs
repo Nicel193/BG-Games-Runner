@@ -1,5 +1,7 @@
 using Code.Runtime.Infrastructure;
+using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Infrastructure.States;
+using Code.Runtime.Infrastructure.States.Core;
 using Code.Runtime.Services.AuthService;
 using TMPro;
 using UnityEngine;
@@ -32,6 +34,7 @@ namespace Code.Runtime.UI
 
         private ISceneLoader _sceneLoader;
         private IAuthService _authService;
+        private GameplayStateMachine _gameplayStateMachine;
 
         private void Awake()
         {
@@ -49,10 +52,10 @@ namespace Code.Runtime.UI
         }
 
         [Inject]
-        private void Construct(ISceneLoader sceneLoader, IAuthService authService)
+        private void Construct(GameplayStateMachine gameplayStateMachine, IAuthService authService)
         {
+            _gameplayStateMachine = gameplayStateMachine;
             _authService = authService;
-            _sceneLoader = sceneLoader;
         }
 
         private async void Register()
@@ -65,7 +68,7 @@ namespace Code.Runtime.UI
             
             if (registerMessage == AuthFirebaseService.CompletedRegistration)
             {
-                _sceneLoader.Load(SceneName.Gameplay.ToString());
+                _gameplayStateMachine.Enter<LoadProgressState>();
 
                 return;
             }
@@ -81,7 +84,7 @@ namespace Code.Runtime.UI
 
             if (loginMessage == AuthFirebaseService.CompletedLogin)
             {
-                _sceneLoader.Load(SceneName.Gameplay.ToString());
+                _gameplayStateMachine.Enter<LoadProgressState>();
                 
                 return;
             }
