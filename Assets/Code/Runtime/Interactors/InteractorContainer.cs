@@ -43,5 +43,10 @@ namespace Code.Runtime.Interactors
             interactor.Construct(repository);
             _interactors.Add(typeof(T), interactor);
         }
+
+        public void CleanUp()
+        {
+            _interactors.Clear();
+        }
     }
 }

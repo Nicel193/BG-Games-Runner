@@ -2,6 +2,7 @@ using Code.Runtime.Infrastructure;
 using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Infrastructure.States;
 using Code.Runtime.Infrastructure.States.Core;
+using Code.Runtime.Infrastructure.States.Gameplay;
 using Code.Runtime.Logic.PlayerSystem;
 using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Services.AdsService;
@@ -20,10 +21,13 @@ namespace Code.Runtime.UI.Windows
         private IAdsService _adsService;
         private ISceneLoader _sceneLoader;
         private GameStateMachine _gameStateMachine;
+        private GameplayStateMachine _gameplayStateMachine;
 
         [Inject]
-        public void Construct(PlayerStateMachine playerStateMachine, IAdsService adsService, GameStateMachine gameStateMachine)
+        public void Construct(PlayerStateMachine playerStateMachine, IAdsService adsService, 
+            GameStateMachine gameStateMachine, GameplayStateMachine gameplayStateMachine)
         {
+            _gameplayStateMachine = gameplayStateMachine;
             _gameStateMachine = gameStateMachine;
             _adsService = adsService;
             _playerStateMachine = playerStateMachine;
@@ -52,6 +56,7 @@ namespace Code.Runtime.UI.Windows
 
             _adsService.ShowRewardedAd(() =>
             {
+                _gameplayStateMachine.Enter<GameLoopState>();
                 _playerStateMachine.Enter<RunStateTmp>();
             });
         }

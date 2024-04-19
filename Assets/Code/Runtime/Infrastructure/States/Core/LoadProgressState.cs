@@ -26,7 +26,7 @@ namespace Code.Runtime.Infrastructure.States.Core
         public async void Enter()
         {
             PlayerProgress playerProgress = new PlayerProgress();
-
+            
             await InitializePlayerProgress(playerProgress);
             InitializeInteractors(playerProgress);
 
@@ -45,6 +45,8 @@ namespace Code.Runtime.Infrastructure.States.Core
 
         private void InitializeInteractors(PlayerProgress playerProgress)
         {
+            _interactorContainer.CleanUp();
+            
             _interactorContainer.CreateInteractor<UserInteractor, UserRepository>(playerProgress._userRepository);
         }
     }
