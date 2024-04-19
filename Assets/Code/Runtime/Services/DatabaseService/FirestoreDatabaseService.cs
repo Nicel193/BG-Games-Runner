@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Code.Runtime.Repositories;
-using Code.Runtime.Services.AuthService;
 using Firebase.Firestore;
 
 namespace Code.Runtime.Services.DatabaseService

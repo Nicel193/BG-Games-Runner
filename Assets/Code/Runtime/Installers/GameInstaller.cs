@@ -2,6 +2,7 @@
 using Code.Runtime.Infrastructure.Bootstrappers;
 using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Interactors;
+using Code.Runtime.Services.AdsService;
 using Code.Runtime.Services.AuthService;
 using Code.Runtime.Services.DatabaseService;
 using Code.Runtime.Services.InputService;
@@ -33,6 +34,13 @@ namespace Code.Runtime.Installers
             BindFirebaseService();
 
             BindFirestoreDatabaseService();
+
+            BindAdsService();
+        }
+
+        private void BindAdsService()
+        {
+            Container.BindInterfacesTo<AdMobAdsService>().AsSingle();
         }
 
         private void BindFirestoreDatabaseService()

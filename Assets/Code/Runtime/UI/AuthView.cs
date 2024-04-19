@@ -34,7 +34,7 @@ namespace Code.Runtime.UI
 
         private ISceneLoader _sceneLoader;
         private IAuthService _authService;
-        private GameplayStateMachine _gameplayStateMachine;
+        private GameStateMachine _gameStateMachine;
 
         private void Awake()
         {
@@ -52,9 +52,9 @@ namespace Code.Runtime.UI
         }
 
         [Inject]
-        private void Construct(GameplayStateMachine gameplayStateMachine, IAuthService authService)
+        private void Construct(GameStateMachine gameStateMachine, IAuthService authService)
         {
-            _gameplayStateMachine = gameplayStateMachine;
+            _gameStateMachine = gameStateMachine;
             _authService = authService;
         }
 
@@ -68,7 +68,7 @@ namespace Code.Runtime.UI
             
             if (registerMessage == AuthFirebaseService.CompletedRegistration)
             {
-                _gameplayStateMachine.Enter<LoadProgressState>();
+                _gameStateMachine.Enter<LoadProgressState>();
 
                 return;
             }
@@ -84,7 +84,7 @@ namespace Code.Runtime.UI
 
             if (loginMessage == AuthFirebaseService.CompletedLogin)
             {
-                _gameplayStateMachine.Enter<LoadProgressState>();
+                _gameStateMachine.Enter<LoadProgressState>();
                 
                 return;
             }

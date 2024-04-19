@@ -1,4 +1,5 @@
 using Code.Runtime.Infrastructure.StateMachines;
+using Code.Runtime.Services.AdsService;
 using Code.Runtime.UI;
 
 namespace Code.Runtime.Infrastructure.States.Gameplay
@@ -7,9 +8,11 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
     {
         private readonly GameplayStateMachine _gameplayStateMachine;
         private readonly IMenuView _menuView;
+        private IAdsService _adsService;
 
-        public MenuState(GameplayStateMachine gameplayStateMachine, IMenuView menuView)
+        public MenuState(GameplayStateMachine gameplayStateMachine, IMenuView menuView, IAdsService adsService)
         {
+            _adsService = adsService;
             _menuView = menuView;
             _gameplayStateMachine = gameplayStateMachine;
         }
@@ -17,7 +20,7 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
         public void Enter()
         {
             _menuView.Enable();
-            
+
             _menuView.OnStartGame += OnStartGame;
         }
 

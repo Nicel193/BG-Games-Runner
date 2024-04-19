@@ -1,6 +1,6 @@
 ﻿using Code.Runtime.Infrastructure.StateMachines;
+using Code.Runtime.Services.AdsService;
 using Code.Runtime.Services.AuthService;
-using Firebase.Firestore;
 
 namespace Code.Runtime.Infrastructure.States.Core
 {
@@ -9,9 +9,12 @@ namespace Code.Runtime.Infrastructure.States.Core
         private readonly ISceneLoader _sceneLoader;
         private readonly GameStateMachine _gameStateMachine;
         private readonly IAuthService _authService;
+        private IAdsService _adsService;
 
-        public BootstrapState(ISceneLoader sceneLoader, GameStateMachine gameStateMachine, IAuthService authService)
+        public BootstrapState(ISceneLoader sceneLoader, GameStateMachine gameStateMachine,
+            IAuthService authService, IAdsService adsService)
         {
+            _adsService = adsService;
             _authService = authService;
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
@@ -20,6 +23,7 @@ namespace Code.Runtime.Infrastructure.States.Core
         public void Enter()
         {
             _authService.Initialize();
+            _adsService.Initialize();
             
             _sceneLoader.Load(SceneName.Bootstrap.ToString(), ToLoadProgressState);
         }
