@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Code.Runtime.Services.InputService
 {
-    public class InputService : IInputService, ITickable
+    public class PCInputService : IInputService, ITickable
     {
         public event Action OnLeftMove;
         public event Action OnRightMove;

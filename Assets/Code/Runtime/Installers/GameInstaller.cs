@@ -63,7 +63,7 @@ namespace Code.Runtime.Installers
 
         private void BindInputService()
         {
-            Container.BindInterfacesTo<InputService>().AsSingle();
+            Container.BindInterfacesTo<MobileInputService>().AsSingle();
         }
 
         private void BindInteractorContainer()
