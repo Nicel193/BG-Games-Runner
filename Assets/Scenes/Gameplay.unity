@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.54901963, g: 0.6745098, b: 0.8313726, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.05
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1042,6 +1042,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuView: {fileID: 1799451523}
+  hudView: {fileID: 1139963526}
+  mapGenerator: {fileID: 2014237808}
 --- !u!4 &685724767
 Transform:
   m_ObjectHideFlags: 0
@@ -1404,37 +1406,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraConfig: {fileID: 11400000, guid: 87a6f91bea51029439056fcb077b9d60, type: 2}
   _playerTransform: {fileID: 1847679695}
---- !u!1 &1104098493
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1104098494}
-  m_Layer: 0
-  m_Name: === Environment ===
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1104098494
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104098493}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1139963521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1447,6 +1418,7 @@ GameObject:
   - component: {fileID: 1139963524}
   - component: {fileID: 1139963523}
   - component: {fileID: 1139963522}
+  - component: {fileID: 1139963526}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -1537,6 +1509,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1139963526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139963521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975f1b05e05c4a348a175701a7cb83d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 445499616}
 --- !u!1 &1322744838
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,7 +2562,6 @@ SceneRoots:
   - {fileID: 613598155}
   - {fileID: 2014237809}
   - {fileID: 51964112}
-  - {fileID: 1104098494}
   - {fileID: 2119276937}
   - {fileID: 1139963525}
   - {fileID: 1799451522}

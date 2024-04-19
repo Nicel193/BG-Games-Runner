@@ -8,8 +8,10 @@ namespace Code.Runtime.Configs
     {
         public Chunk[] ChunkPrefabs;
         public Obstacle[] ObstaclesPrefabs;
-        public int InitialChunkCount = 10;
+        public int InitialChunkCount = 6;
+        public int InitialChunkPoolCount = 30;
         public int InitialObstacleCount = 5;
-        public int SpawnDistance = 40;
+        public int SpawnDistance = 50;
+        public float TimeToSpawnObstacles = 4f;
     }
 }

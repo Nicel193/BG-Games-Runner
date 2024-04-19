@@ -7,6 +7,7 @@ using Code.Runtime.Services.AuthService;
 using Code.Runtime.Services.DatabaseService;
 using Code.Runtime.Services.InputService;
 using Code.Runtime.Services.LogService;
+using Code.Runtime.Services.TimerService;
 using Zenject;
 
 namespace Code.Runtime.Installers
@@ -36,6 +37,13 @@ namespace Code.Runtime.Installers
             BindFirestoreDatabaseService();
 
             BindAdsService();
+
+            BindTimerService();
+        }
+
+        private void BindTimerService()
+        {
+            Container.BindInterfacesTo<TimerService>().AsSingle();
         }
 
         private void BindAdsService()

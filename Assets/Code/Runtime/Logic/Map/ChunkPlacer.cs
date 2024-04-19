@@ -15,16 +15,21 @@ namespace Code.Runtime.Logic.Map
         private Transform _player;
 
         private List<Chunk> _chunks = new List<Chunk>();
-        private MapGenerationConfig _mapGenerationConfig;
         private IObstaclePlacer _obstaclePlacer;
         private IObjectPool<Chunk> _chunksPool;
+        private int _spawnDistance;
+        private int _initialChunkPoolCount;
+        private int _initialChunkCount;
 
         public void Init(Transform player, MapGenerationConfig mapGenerationConfig,
             IGameObjectsPoolContainer poolContainer, IObstaclePlacer obstaclePlacer)
         {
             _obstaclePlacer = obstaclePlacer;
-            _mapGenerationConfig = mapGenerationConfig;
             _player = player;
+
+            _spawnDistance = mapGenerationConfig.SpawnDistance;
+            _initialChunkPoolCount = mapGenerationConfig.InitialChunkPoolCount;
+            _initialChunkCount = mapGenerationConfig.InitialChunkCount;
 
             InitializeChunkPool(mapGenerationConfig, poolContainer);
             SpawnInitalChunks();
@@ -34,7 +39,7 @@ namespace Code.Runtime.Logic.Map
         {
             SpawnFirstChunk();
             
-            for (int i = 0; i < _mapGenerationConfig.InitialChunkCount; i++)
+            for (int i = 0; i < _initialChunkCount; i++)
                 SpawnChunk();
         }
 
@@ -42,7 +47,7 @@ namespace Code.Runtime.Logic.Map
         {
             float distance = Vector3.Distance(_chunks[^1].End.position, _player.position);
 
-            if (distance <= _mapGenerationConfig.SpawnDistance)
+            if (distance <= _spawnDistance)
             {
                 DestroyChunk();
                 SpawnChunk();
@@ -82,7 +87,7 @@ namespace Code.Runtime.Logic.Map
             ChunkFactory chunkFactory = new ChunkFactory(mapGenerationConfig);
 
             _chunksPool = new GroupObjectPool<Chunk>(chunkFactory,
-                _mapGenerationConfig.InitialChunkCount, poolContainer, ChunksPoolName);
+                _initialChunkPoolCount, poolContainer, ChunksPoolName);
         }
     }
 }

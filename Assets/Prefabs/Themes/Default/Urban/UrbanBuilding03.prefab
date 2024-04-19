@@ -799,7 +799,8 @@ MonoBehaviour:
   <Begin>k__BackingField: {fileID: 4000013171735688}
   <End>k__BackingField: {fileID: 4000010488526054}
   <AllowedObstacles>k__BackingField: 1
-  obstaclePositions: []
+  obstaclePositions:
+  - 0.5
 --- !u!1 &1000011370314780
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,14 +10,11 @@ namespace Code.Runtime.Installers
     public class PlayerInstaller : MonoInstaller
     {
         [SerializeField] private FollowPlayerCamera followPlayerCamera;
-        [SerializeField] private PlayerConfig playerConfig;
         [SerializeField] private PlayerAnimator playerAnimator;
         [SerializeField] private Player player;
         
         public override void InstallBindings()
         {
-            Container.BindInstance(playerConfig).AsSingle();
-            
             // BindFollowPlayerCamera();
             
             BindPlayerStatesFactory();

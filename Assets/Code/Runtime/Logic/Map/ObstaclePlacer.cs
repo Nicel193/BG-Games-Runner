@@ -35,7 +35,7 @@ namespace Code.Runtime.Logic.Map
 
             for (int i = 0; i < obstaclePositions.Count; i++)
             {
-                if (Random.Range(0, 11) >= 5) return;
+                if (Random.Range(0, 11) >= 8) return;
 
                 Vector3 obstaclePosition = chunk.GetObstaclePosition(i);
                 Obstacle newObstacle = _obstaclesPool.Get();

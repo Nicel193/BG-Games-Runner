@@ -9,16 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c3f0e52ebc4623844ffa9a9f2bd358, type: 3}
-  m_Name: PlayerConfig
+  m_Script: {fileID: 11500000, guid: b91c23f10c2e4c588ee31d11595728f0, type: 3}
+  m_Name: CoreConfig
   m_EditorClassIdentifier: 
-  StartMoveSpeed: 7
-  MoveSpeedScaler: 2
-  SideMoveOffset: 1.6
-  ChangeSideSpeed: 5
-  JumpForce: 4
-  SlidingHeight: 0.5
-  SlidingTime: 1
-  SmoothSpeed: 5
-  Height: 2.3
-  ZOffset: -5.5
+  playerConfig: {fileID: 11400000, guid: 87a6f91bea51029439056fcb077b9d60, type: 2}
+  mapGenerationConfig: {fileID: 11400000, guid: 7164b21517df0404da71d76f84f6199f, type: 2}
