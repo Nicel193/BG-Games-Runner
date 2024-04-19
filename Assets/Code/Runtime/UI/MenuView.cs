@@ -14,6 +14,7 @@ namespace Code.Runtime.UI
         public event Action OnStartGame;
 
         [SerializeField] private Button startGameButton;
+        [SerializeField] private Button exitGameButton;
         [SerializeField] private Button signOutGameButton;
 
         private IAuthService _authService;
@@ -23,12 +24,14 @@ namespace Code.Runtime.UI
         {
             startGameButton.onClick.AddListener(StartGame);
             signOutGameButton.onClick.AddListener(SignOut);
+            exitGameButton.onClick.AddListener(ExitGame);
         }
 
         private void OnDisable()
         {
             startGameButton.onClick.RemoveListener(StartGame);
             signOutGameButton.onClick.RemoveListener(SignOut);
+            exitGameButton.onClick.RemoveListener(ExitGame);
         }
 
         [Inject]
@@ -52,5 +55,8 @@ namespace Code.Runtime.UI
 
         private void StartGame() =>
             OnStartGame?.Invoke();
+
+        private void ExitGame() =>
+            Application.Quit();
     }
 }
