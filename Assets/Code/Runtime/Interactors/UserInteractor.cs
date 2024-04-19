@@ -7,8 +7,8 @@ namespace Code.Runtime.Interactors
     {
         public event Action<int, int> OnScoreIncreased;
         
-        public int GetMaxCurrentScore() =>
-            _repository.CurrentScore;
+        public int GetMaxScore() =>
+            _repository.MaxScore;
 
         public int GetCurrentScore() =>
             _repository.CurrentScore;

@@ -19,14 +19,12 @@ namespace Code.Runtime.UI.Windows
             InteractorContainer = interactorContainer;
             WindowService = windowService;
         }
-
-        private void Awake() =>
-            Initialize();
-
+        
         protected virtual void OnEnable()
         {
             CloseButton.onClick.AddListener(WindowService.Close);
             
+            Initialize();
             SubscribeUpdates();
         }
 

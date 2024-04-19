@@ -25,7 +25,7 @@ namespace Code.Runtime.UI
 
             userInteractor.OnScoreIncreased += UpdateScoreText;
             
-            UpdateScoreText(userInteractor.GetCurrentScore(), userInteractor.GetMaxCurrentScore());
+            UpdateScoreText(userInteractor.GetCurrentScore(), userInteractor.GetMaxScore());
         }
 
         private void OnDestroy()

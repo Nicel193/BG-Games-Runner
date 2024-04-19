@@ -43,6 +43,9 @@ namespace Code.Runtime.Services.WindowsService
                     case WindowType.Death:
                         _currentWindow = _windowFactory.CreateWindow<DeathWindow>(windowType);
                         break;
+                    case WindowType.Leaderboard:
+                        _currentWindow = _windowFactory.CreateWindow<LeaderboardWindow>(windowType);
+                        break;
                 }
 
                 _createdWindows.Add(windowType, _currentWindow);

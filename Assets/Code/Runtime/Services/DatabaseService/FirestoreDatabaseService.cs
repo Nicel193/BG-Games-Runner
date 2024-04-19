@@ -49,7 +49,7 @@ namespace Code.Runtime.Services.DatabaseService
         public async Task<List<UserRepository>> GetTopPlayersAsync(int limit)
         {
             Query query = _firebaseFirestore.Collection(UsersCollection)
-                .OrderByDescending("score")
+                .OrderByDescending("MaxScore")
                 .Limit(limit);
 
             QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
