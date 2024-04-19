@@ -19,8 +19,9 @@ namespace Code.Runtime.Infrastructure.States.Core
 
         public void Enter(string sceneName)
         {
-            _interactorContainer.Get<UserInteractor>().ResetCurrentScore();
-            
+            if(_interactorContainer.TryGet(out UserInteractor userInteractor))
+                userInteractor.ResetCurrentScore();
+
             _sceneLoader.Load(sceneName,
                 () => { _logService.Log($"Loaded: {sceneName} (Scene)"); });
         }
