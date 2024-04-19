@@ -1,10 +1,7 @@
 using Code.Runtime.Interactors;
-using Code.Runtime.Logic;
-using Code.Runtime.Logic.Map;
 using Code.Runtime.Logic.PlayerSystem;
 using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Repositories;
-using Code.Runtime.Services.TimerService;
 using Code.Runtime.UI;
 using UnityEngine;
 
@@ -17,8 +14,7 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
         private readonly IHudView _hudView;
 
         private float _scoreTimer;
-        private int _timerId;
-        private bool _startScoreCount;
+        private bool _isFirstEntry = true;
 
         public GameLoopState(PlayerStateMachine playerStateMachine, IInteractorContainer interactorContainer, IHudView hudView)
         {
@@ -29,8 +25,11 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
 
         public void Enter()
         {
-            _playerStateMachine.Enter<StartRunState>();
+            if (_isFirstEntry) _playerStateMachine.Enter<StartRunState>();
+            
             _hudView.Enable();
+
+            _isFirstEntry = false;
         }
 
         public void Update()
