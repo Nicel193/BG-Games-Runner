@@ -22,8 +22,6 @@ namespace Code.Runtime.UI
             
             _windowAssets = _windowAssetsConfig.WindowAssets
                 .ToDictionary(k => k.WindowType, v => v.WindowPrefab);
-
-            CreateWindowsRoot();
         }
 
         public Transform CreateWindowsRoot()

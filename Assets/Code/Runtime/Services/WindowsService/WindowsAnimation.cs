@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,20 +22,20 @@ namespace Code.Runtime.Services.WindowsService
 
         public void OpenAnimation(Transform window)
         {
-            // window.localScale = Vector3.zero;
-            // _backgroundImage.enabled = true;
-            //
-            // DOTween.Sequence()
-            //     .Append(window.DOScale(WindowScale, AnimationDuration).SetEase(Ease.InOutBack))
-            //     .Insert(0f, _backgroundImage.DOFade(BackgroundOpenTransparency, AnimationDuration));
+            window.localScale = Vector3.zero;
+            _backgroundImage.enabled = true;
+            
+            DOTween.Sequence()
+                .Append(window.DOScale(WindowScale, AnimationDuration).SetEase(Ease.InOutBack))
+                .Insert(0f, _backgroundImage.DOFade(BackgroundOpenTransparency, AnimationDuration));
         }
 
         public void CloseAnimation(Transform window, Action onCallback)
         {
-            // DOTween.Sequence()
-            //     .Append(window.DOScale(0f, AnimationDuration).SetEase(Ease.InBack))
-            //     .Insert(0f, _backgroundImage.DOFade(0f, AnimationDuration))
-            //     .OnKill(() => { OnClose(onCallback);});
+            DOTween.Sequence()
+                .Append(window.DOScale(0f, AnimationDuration).SetEase(Ease.InBack))
+                .Insert(0f, _backgroundImage.DOFade(0f, AnimationDuration))
+                .OnKill(() => { OnClose(onCallback);});
         }
 
         private void OnClose(Action onCallback)

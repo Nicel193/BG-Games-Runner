@@ -23,10 +23,7 @@ namespace Code.Runtime.Services.WindowsService
         {
             _windowFactory = windowFactory;
             _logService = logService;
-        }
-        
-        public void Initialize()
-        {
+            
             var windowsRoot = _windowFactory.CreateWindowsRoot();
 
             _windowsAnimation = new WindowsAnimation(windowsRoot);
@@ -51,7 +48,7 @@ namespace Code.Runtime.Services.WindowsService
                 _createdWindows.Add(windowType, _currentWindow);
             }
 
-            // _windowsAnimation.OpenAnimation(_currentWindow.transform);
+            _windowsAnimation.OpenAnimation(_currentWindow.transform);
         }
 
         private bool TryShowCreatedWindow(WindowType windowType)
@@ -89,14 +86,11 @@ namespace Code.Runtime.Services.WindowsService
 
         private void DestroyWindow()
         {
-            _currentWindow.gameObject.SetActive(false);
-            _currentWindow = null;
-            
-            // _windowsAnimation.CloseAnimation(_currentWindow.transform, () =>
-            // {
-            //     _currentWindow.gameObject.SetActive(false);
-            //     _currentWindow = null;
-            // });
+            _windowsAnimation.CloseAnimation(_currentWindow.transform, () =>
+            {
+                _currentWindow.gameObject.SetActive(false);
+                _currentWindow = null;
+            });
         }
 
         private void SetWindow(WindowType windowType, bool returnPage)

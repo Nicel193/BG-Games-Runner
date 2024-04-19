@@ -7,6 +7,5 @@ namespace Code.Runtime.Services.WindowsService
     {
         void Open(WindowType windowType, bool returnPage = false);
         void Close();
-        void Initialize();
     }
 }
