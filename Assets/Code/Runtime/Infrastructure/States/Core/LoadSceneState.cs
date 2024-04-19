@@ -1,4 +1,6 @@
-﻿using Code.Runtime.Services.LogService;
+﻿using Code.Runtime.Interactors;
+using Code.Runtime.Repositories;
+using Code.Runtime.Services.LogService;
 
 namespace Code.Runtime.Infrastructure.States.Core
 {
@@ -6,15 +8,19 @@ namespace Code.Runtime.Infrastructure.States.Core
     {
         private readonly ILogService _logService;
         private readonly ISceneLoader _sceneLoader;
+        private readonly IInteractorContainer _interactorContainer;
 
-        public LoadSceneState(ILogService logService, ISceneLoader sceneLoader)
+        public LoadSceneState(ILogService logService, ISceneLoader sceneLoader, IInteractorContainer interactorContainer)
         {
+            _interactorContainer = interactorContainer;
             _logService = logService;
             _sceneLoader = sceneLoader;
         }
 
         public void Enter(string sceneName)
         {
+            _interactorContainer.Get<UserInteractor>().ResetCurrentScore();
+            
             _sceneLoader.Load(sceneName,
                 () => { _logService.Log($"Loaded: {sceneName} (Scene)"); });
         }

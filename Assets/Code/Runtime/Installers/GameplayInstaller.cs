@@ -35,8 +35,15 @@ namespace Code.Runtime.Installers
             BindUIFactory();
 
             BindWindowService();
+
+            BindHudView();
         }
-        
+
+        private void BindHudView()
+        {
+            Container.Bind<IHudView>().FromInstance(hudView).AsSingle();
+        }
+
         private void BindWindowService()
         {
             Container.BindInterfacesTo<WindowService>().AsSingle();

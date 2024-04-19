@@ -6,8 +6,9 @@ using Zenject;
 
 namespace Code.Runtime.UI
 {
-    public class HUDView : MonoBehaviour
+    public class HUDView : MonoBehaviour, IHudView
     {
+        [SerializeField] private TextMeshProUGUI maxScoreText;
         [SerializeField] private TextMeshProUGUI scoreText;
         
         private IInteractorContainer _interactorContainer;
@@ -23,6 +24,8 @@ namespace Code.Runtime.UI
             if (!_interactorContainer.TryGet(out UserInteractor userInteractor)) return;
 
             userInteractor.OnScoreIncreased += UpdateScoreText;
+            
+            UpdateScoreText(userInteractor.GetCurrentScore(), userInteractor.GetMaxCurrentScore());
         }
 
         private void OnDestroy()
@@ -31,10 +34,17 @@ namespace Code.Runtime.UI
 
             userInteractor.OnScoreIncreased -= UpdateScoreText;
         }
+        
+        public void Enable() =>
+            gameObject.SetActive(true);
 
-        private void UpdateScoreText(int score)
+        public void Disable() =>
+            gameObject.SetActive(false);
+
+        private void UpdateScoreText(int score, int maxScore)
         {
             scoreText.text = score.ToString();
+            maxScoreText.text = maxScore.ToString();
         }
     }
 }

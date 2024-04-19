@@ -25,6 +25,7 @@ namespace Code.Runtime.Infrastructure.Bootstrappers
         {
             _gameplayStateMachine.RegisterState(_statesFactory.Create<MenuState>());
             _gameplayStateMachine.RegisterState(_statesFactory.Create<GameLoopState>());
+            _gameplayStateMachine.RegisterState(_statesFactory.Create<EndGameState>());
 
             _gameplayStateMachine.Enter<MenuState>();
         }

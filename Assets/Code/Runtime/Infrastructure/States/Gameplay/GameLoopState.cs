@@ -5,6 +5,7 @@ using Code.Runtime.Logic.PlayerSystem;
 using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Repositories;
 using Code.Runtime.Services.TimerService;
+using Code.Runtime.UI;
 using UnityEngine;
 
 namespace Code.Runtime.Infrastructure.States.Gameplay
@@ -13,15 +14,15 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
     {
         private readonly PlayerStateMachine _playerStateMachine;
         private readonly UserInteractor _userInteractor;
-        private readonly IMapGenerator _mapGenerator;
-        private readonly ITimerService _timerService;
+        private readonly IHudView _hudView;
 
         private float _scoreTimer;
         private int _timerId;
         private bool _startScoreCount;
 
-        public GameLoopState(PlayerStateMachine playerStateMachine, IInteractorContainer interactorContainer)
+        public GameLoopState(PlayerStateMachine playerStateMachine, IInteractorContainer interactorContainer, IHudView hudView)
         {
+            _hudView = hudView;
             _playerStateMachine = playerStateMachine;
             _userInteractor = interactorContainer.Get<UserInteractor>();
         }
@@ -29,6 +30,7 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
         public void Enter()
         {
             _playerStateMachine.Enter<StartRunState>();
+            _hudView.Enable();
         }
 
         public void Update()
@@ -45,7 +47,7 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
 
         public void Exit()
         {
-            _timerService.StopTimer(_timerId);
+            _hudView.Disable();
         }
     }
 }
