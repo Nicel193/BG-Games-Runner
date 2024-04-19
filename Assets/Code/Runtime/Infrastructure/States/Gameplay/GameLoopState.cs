@@ -28,19 +28,10 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
         public void Enter()
         {
             _playerStateMachine.Enter<StartRunState>();
-
-            // _timerId = _timerService.StartTimer(4,
-            //     () =>
-            //     {
-            //         _mapGenerator.StartPlaceObstacles();
-            //         _startScoreCount = true;
-            //     });
         }
 
         public void Update()
         {
-            if(!_startScoreCount) return;
-
             _scoreTimer += Time.deltaTime;
 
             if (_scoreTimer >= 1)

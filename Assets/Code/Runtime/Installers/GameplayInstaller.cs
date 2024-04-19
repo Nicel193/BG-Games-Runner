@@ -3,6 +3,7 @@ using Code.Runtime.Infrastructure.ObjectPool;
 using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Logic;
 using Code.Runtime.Logic.Map;
+using Code.Runtime.Services.WindowsService;
 using Code.Runtime.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,6 +30,20 @@ namespace Code.Runtime.Installers
             BindMenuView();
 
             BindMapGenerator();
+            
+            BindUIFactory();
+
+            BindWindowService();
+        }
+        
+        private void BindWindowService()
+        {
+            Container.BindInterfacesTo<WindowService>().AsSingle();
+        }
+
+        private void BindUIFactory()
+        {
+            Container.BindInterfacesTo<WindowFactory>().AsSingle();
         }
 
         private void BindMapGenerator()

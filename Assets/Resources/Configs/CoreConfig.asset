@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerConfig: {fileID: 11400000, guid: 87a6f91bea51029439056fcb077b9d60, type: 2}
   mapGenerationConfig: {fileID: 11400000, guid: 7164b21517df0404da71d76f84f6199f, type: 2}
+  windowAssetsConfig: {fileID: 11400000, guid: 2a2877381637cc4489a5c14369393a5a, type: 2}

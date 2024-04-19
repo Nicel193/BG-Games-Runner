@@ -6,7 +6,9 @@ namespace Code.Runtime.Services.AdsService
 {
     public class AdMobAdsService : IAdsService
     {
-        public string appId = "ca-app-pub-1385093244148841~5602672977";
+        private const string appId = "ca-app-pub-1385093244148841~5602672977";
+
+        public bool IsRewardAdLoaded { get; private set; }
 
 #if UNITY_ANDROID
         string bannerId = "ca-app-pub-1385093244148841/2952458907";
@@ -60,6 +62,7 @@ namespace Code.Runtime.Services.AdsService
 
                 _logService.Log("Rewarded ad loaded !!");
                 _rewardedAd = ad;
+                IsRewardAdLoaded = true;
                 RewardedAdEvents(_rewardedAd);
             });
         }
@@ -70,7 +73,11 @@ namespace Code.Runtime.Services.AdsService
             {
                 _rewardedAd.Show(reward =>
                 {
+                    IsRewardAdLoaded = false;
+                    
                     onVideoFinished?.Invoke();
+
+                    LoadRewardedAd();
                     
                     _logService.Log("Ad video finished");
                 });

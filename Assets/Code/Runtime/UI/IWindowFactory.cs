@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace Code.Runtime.UI
 {
-    public interface IUIFactory
+    public interface IWindowFactory
     {
-        void Initialize();
         Transform CreateWindowsRoot();
         T CreateWindow<T>(WindowType windowType) where T : WindowBase;
     }

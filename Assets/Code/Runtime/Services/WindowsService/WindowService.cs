@@ -8,7 +8,7 @@ namespace Code.Runtime.Services.WindowsService
 {
    public class WindowService : IWindowService
     {
-        private readonly IUIFactory _uiFactory;
+        private readonly IWindowFactory _windowFactory;
         private readonly ILogService _logService;
         // private readonly IAudioService _audioService;
 
@@ -19,15 +19,15 @@ namespace Code.Runtime.Services.WindowsService
         private List<WindowType> _previousPages = new List<WindowType>();
         private Dictionary<WindowType, WindowBase> _createdWindows = new Dictionary<WindowType, WindowBase>();
 
-        public WindowService(IUIFactory uiFactory, ILogService logService)
+        public WindowService(IWindowFactory windowFactory, ILogService logService)
         {
-            _uiFactory = uiFactory;
+            _windowFactory = windowFactory;
             _logService = logService;
         }
         
         public void Initialize()
         {
-            var windowsRoot = _uiFactory.CreateWindowsRoot();
+            var windowsRoot = _windowFactory.CreateWindowsRoot();
 
             _windowsAnimation = new WindowsAnimation(windowsRoot);
         }
@@ -40,15 +40,15 @@ namespace Code.Runtime.Services.WindowsService
             {
                 switch (windowType)
                 {
-                    // case WindowType.RestartGame:
-                    //     _currentWindow = _uiFactory.CreateWindow<RestartGameWindow>(windowType);
-                    //     break;
+                    case WindowType.Death:
+                        _currentWindow = _windowFactory.CreateWindow<DeathWindow>(windowType);
+                        break;
                 }
 
                 _createdWindows.Add(windowType, _currentWindow);
             }
 
-            _windowsAnimation.OpenAnimation(_currentWindow.transform);
+            // _windowsAnimation.OpenAnimation(_currentWindow.transform);
         }
 
         private bool TryShowCreatedWindow(WindowType windowType)
@@ -86,11 +86,14 @@ namespace Code.Runtime.Services.WindowsService
 
         private void DestroyWindow()
         {
-            _windowsAnimation.CloseAnimation(_currentWindow.transform, () =>
-            {
-                _currentWindow.gameObject.SetActive(false);
-                _currentWindow = null;
-            });
+            _currentWindow.gameObject.SetActive(false);
+            _currentWindow = null;
+            
+            // _windowsAnimation.CloseAnimation(_currentWindow.transform, () =>
+            // {
+            //     _currentWindow.gameObject.SetActive(false);
+            //     _currentWindow = null;
+            // });
         }
 
         private void SetWindow(WindowType windowType, bool returnPage)

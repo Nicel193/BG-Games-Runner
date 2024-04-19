@@ -6,5 +6,6 @@ namespace Code.Runtime.Services.AdsService
     {
         void Initialize();
         void ShowRewardedAd(Action onVideoFinished);
+        bool IsRewardAdLoaded { get; }
     }
 }
