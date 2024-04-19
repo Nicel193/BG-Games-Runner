@@ -8,7 +8,9 @@ namespace Code.Runtime.Infrastructure.StateMachines
     {
         private Dictionary<Type, IExitableState> _states = new Dictionary<Type, IExitableState>();
         private IExitableState _activeState;
-        
+
+        protected virtual bool CanRepeatState => true;
+
         public void Enter<TState>() where TState : class, IState
         {
             IState state = ChangeState<TState>();
@@ -23,7 +25,7 @@ namespace Code.Runtime.Infrastructure.StateMachines
 
         public void RegisterState<TState>(TState state) where TState : IExitableState => 
             _states.Add(typeof(TState), state);
-        
+
         public void UpdateState()
         {
             if (_activeState != null && _activeState is IUpdatebleState updatebleState)
@@ -34,7 +36,7 @@ namespace Code.Runtime.Infrastructure.StateMachines
         {
             TState state = GetState<TState>();
 
-            if (state == _activeState) return null;
+            if (!CanRepeatState && state == _activeState) return null;
             
             _activeState?.Exit();
             _activeState = state;

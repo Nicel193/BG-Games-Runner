@@ -8,6 +8,7 @@ using Code.Runtime.Services.DatabaseService;
 using Code.Runtime.Services.InputService;
 using Code.Runtime.Services.LogService;
 using Code.Runtime.Services.TimerService;
+using UnityEngine;
 using Zenject;
 
 namespace Code.Runtime.Installers
@@ -63,7 +64,10 @@ namespace Code.Runtime.Installers
 
         private void BindInputService()
         {
-            Container.BindInterfacesTo<MobileInputService>().AsSingle();
+            if (Application.isMobilePlatform)
+                Container.BindInterfacesTo<MobileInputService>().AsSingle();
+            else
+                Container.BindInterfacesTo<PCInputService>().AsSingle();
         }
 
         private void BindInteractorContainer()

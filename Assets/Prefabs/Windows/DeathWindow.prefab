@@ -680,7 +680,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CloseButton: {fileID: 5388022498024566047}
-  _respawnButton: {fileID: 5388022498024566047}
+  respawnButton: {fileID: 5388022498024566047}
+  restartButton: {fileID: 8148164761698190067}
 --- !u!1 &8709259301766698257
 GameObject:
   m_ObjectHideFlags: 0

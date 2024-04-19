@@ -1,7 +1,7 @@
 using System;
-using Code.Runtime.Infrastructure;
 using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Infrastructure.States;
+using Code.Runtime.Infrastructure.States.Core;
 using Code.Runtime.Services.AuthService;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +17,7 @@ namespace Code.Runtime.UI
         [SerializeField] private Button signOutGameButton;
 
         private IAuthService _authService;
-        private ISceneLoader _sceneLoader;
+        private GameStateMachine _gameStateMachine;
 
         private void OnEnable()
         {
@@ -32,9 +32,9 @@ namespace Code.Runtime.UI
         }
 
         [Inject]
-        private void Construct(IAuthService authService, ISceneLoader sceneLoader)
+        private void Construct(IAuthService authService, GameStateMachine gameStateMachine)
         {
-            _sceneLoader = sceneLoader;
+            _gameStateMachine = gameStateMachine;
             _authService = authService;
         }
 
@@ -47,7 +47,7 @@ namespace Code.Runtime.UI
         private void SignOut()
         {
             _authService.SignOut();
-            _sceneLoader.Load(SceneName.Authorization.ToString());
+            _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Authorization.ToString());
         }
 
         private void StartGame() =>

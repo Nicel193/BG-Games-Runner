@@ -1,4 +1,8 @@
-using Code.Runtime.Logic;
+using Code.Runtime.Infrastructure;
+using Code.Runtime.Infrastructure.StateMachines;
+using Code.Runtime.Infrastructure.States;
+using Code.Runtime.Infrastructure.States.Core;
+using Code.Runtime.Logic.PlayerSystem;
 using Code.Runtime.Logic.PlayerSystem.States;
 using Code.Runtime.Services.AdsService;
 using UnityEngine;
@@ -9,14 +13,18 @@ namespace Code.Runtime.UI.Windows
 {
     public class DeathWindow : WindowBase
     {
-        [SerializeField] private Button _respawnButton;
+        [SerializeField] private Button respawnButton;
+        [SerializeField] private Button restartButton;
         
         private PlayerStateMachine _playerStateMachine;
         private IAdsService _adsService;
+        private ISceneLoader _sceneLoader;
+        private GameStateMachine _gameStateMachine;
 
         [Inject]
-        public void Construct(PlayerStateMachine playerStateMachine, IAdsService adsService)
+        public void Construct(PlayerStateMachine playerStateMachine, IAdsService adsService, GameStateMachine gameStateMachine)
         {
+            _gameStateMachine = gameStateMachine;
             _adsService = adsService;
             _playerStateMachine = playerStateMachine;
         }
@@ -28,12 +36,14 @@ namespace Code.Runtime.UI.Windows
 
         protected override void SubscribeUpdates()
         {
-            _respawnButton.onClick.AddListener(Respawn);
+            respawnButton.onClick.AddListener(Respawn);
+            restartButton.onClick.AddListener(Restart);
         }
 
         protected override void Cleanup()
         {
-            _respawnButton.onClick.RemoveListener(Respawn);
+            respawnButton.onClick.RemoveListener(Respawn);
+            restartButton.onClick.RemoveListener(Restart);
         }
 
         private void Respawn()
@@ -44,6 +54,11 @@ namespace Code.Runtime.UI.Windows
             {
                 _playerStateMachine.Enter<RunStateTmp>();
             });
+        }
+
+        private void Restart()
+        {
+            _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Gameplay.ToString());
         }
     }
 }

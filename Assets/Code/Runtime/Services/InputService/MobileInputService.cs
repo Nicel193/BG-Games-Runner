@@ -6,9 +6,10 @@ namespace Code.Runtime.Services.InputService
 {
     public class MobileInputService : IInputService, ITickable
     {
-        public float swipeThreshold = 100f;
-        private Vector2 fingerDownPosition;
-        private Vector2 fingerUpPosition;
+        private const float SwipeThreshold = 100f;
+        
+        private Vector2 _fingerDownPosition;
+        private Vector2 _fingerUpPosition;
 
         public event Action OnLeftMove;
         public event Action OnRightMove;
@@ -26,16 +27,16 @@ namespace Code.Runtime.Services.InputService
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    fingerDownPosition = touch.position;
+                    _fingerDownPosition = touch.position;
                 }
 
                 if (touch.phase == TouchPhase.Ended)
                 {
-                    fingerUpPosition = touch.position;
+                    _fingerUpPosition = touch.position;
 
-                    if (Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x) > swipeThreshold)
+                    if (Mathf.Abs(_fingerDownPosition.x - _fingerUpPosition.x) > SwipeThreshold)
                     {
-                        if (fingerDownPosition.x - fingerUpPosition.x > 0)
+                        if (_fingerDownPosition.x - _fingerUpPosition.x > 0)
                         {
                             OnLeftMove?.Invoke();
                         }
@@ -44,9 +45,9 @@ namespace Code.Runtime.Services.InputService
                             OnRightMove?.Invoke();
                         }
                     }
-                    else if (Mathf.Abs(fingerDownPosition.y - fingerUpPosition.y) > swipeThreshold)
+                    else if (Mathf.Abs(_fingerDownPosition.y - _fingerUpPosition.y) > SwipeThreshold)
                     {
-                        if (fingerDownPosition.y - fingerUpPosition.y > 0)
+                        if (_fingerDownPosition.y - _fingerUpPosition.y > 0)
                         {
                             OnSliding?.Invoke();
                         }
