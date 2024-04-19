@@ -25,7 +25,7 @@ namespace Code.Runtime.Interactors
         {
             T interactor = new T();
 
-            ConstructInteractor<T>(interactor, (IRepository)repository);
+            ConstructInteractor<T>(interactor, repository);
         }
 
         public void CreateInteractor<T, TRepository, TPayload>(TRepository repository, TPayload payload)

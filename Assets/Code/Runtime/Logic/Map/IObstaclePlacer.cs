@@ -4,5 +4,6 @@ namespace Code.Runtime.Logic.Map
     {
         void SpawnObstacle(Chunk chunk);
         void DestroyObstacle(Chunk chunk);
+        void StartPlaceObstacles();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Code.Runtime.Infrastructure.StateMachines;
+using Code.Runtime.Interactors;
 using Code.Runtime.Repositories;
 using Code.Runtime.Services.AuthService;
 using Code.Runtime.Services.DatabaseService;
@@ -27,6 +28,7 @@ namespace Code.Runtime.Infrastructure.States.Core
             PlayerProgress playerProgress = new PlayerProgress();
 
             await InitializePlayerProgress(playerProgress);
+            InitializeInteractors(playerProgress);
 
             _gameStateMachine.Enter<LoadSceneState, string>(SceneName.Gameplay.ToString());
         }
@@ -39,6 +41,11 @@ namespace Code.Runtime.Infrastructure.States.Core
         {
             playerProgress._userRepository =
                 await _databaseService.GetUserDataAsync(_authService.UserId, _authService.UserName);
+        }
+
+        private void InitializeInteractors(PlayerProgress playerProgress)
+        {
+            _interactorContainer.CreateInteractor<UserInteractor, UserRepository>(playerProgress._userRepository);
         }
     }
 }

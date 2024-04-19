@@ -12,6 +12,8 @@ namespace Code.Runtime.Logic.Map
         private Dictionary<Chunk, List<Obstacle>> _obstacles = new Dictionary<Chunk, List<Obstacle>>();
         private IObjectPool<Obstacle> _obstaclesPool;
 
+        private bool _isCanPlaceObstacles;
+
         public void Init(MapGenerationConfig mapGenerationConfig, IGameObjectsPoolContainer poolContainer)
         {
             ObstacleFactory obstacleFactory = new ObstacleFactory(mapGenerationConfig);
@@ -20,8 +22,13 @@ namespace Code.Runtime.Logic.Map
                 poolContainer, ObstaclesPoolName);
         }
 
+        public void StartPlaceObstacles() =>
+            _isCanPlaceObstacles = true;
+
         public void SpawnObstacle(Chunk chunk)
         {
+            if(!_isCanPlaceObstacles) return;
+
             List<float> obstaclePositions = chunk.obstaclePositions;
 
             _obstacles.Add(chunk, new List<Obstacle>());

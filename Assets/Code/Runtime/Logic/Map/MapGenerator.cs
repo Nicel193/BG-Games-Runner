@@ -5,18 +5,18 @@ using Zenject;
 
 namespace Code.Runtime.Logic.Map
 {
-    public class MapGenerator : MonoBehaviour
+    public class MapGenerator : MonoBehaviour, IMapGenerator
     {
         [SerializeField] private MapGenerationConfig _mapGenerationConfig;
-        [SerializeField] private ChunkPlacer _chunkPlacer;
         [SerializeField] private Transform _player;
-        
-        private ObstaclePlacer _chunkObstacle = new ObstaclePlacer();
+
+        private readonly ChunkPlacer _chunkPlacer = new ChunkPlacer();
+        private readonly ObstaclePlacer _chunkObstacle = new ObstaclePlacer();
 
         private IGameObjectsPoolContainer _gameObjectsPoolContainer;
 
         [Inject]
-        public void Construct(IGameObjectsPoolContainer gameObjectsPoolContainer)
+        private void Construct(IGameObjectsPoolContainer gameObjectsPoolContainer)
         {
             _gameObjectsPoolContainer = gameObjectsPoolContainer;
         }
@@ -31,5 +31,8 @@ namespace Code.Runtime.Logic.Map
         {
             _chunkPlacer.Update();
         }
+
+        public void StartPlaceObstacles() =>
+            _chunkObstacle.StartPlaceObstacles();
     }
 }

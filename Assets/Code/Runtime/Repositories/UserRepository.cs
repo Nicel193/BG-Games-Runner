@@ -3,12 +3,14 @@ using Firebase.Firestore;
 namespace Code.Runtime.Repositories
 {
     [FirestoreData]
-    public struct UserRepository
+    public class UserRepository : IRepository
     {
         [FirestoreProperty]
         public string Name { get; set; }
        
         [FirestoreProperty]
-        public int Score { get; set; }
+        public int MaxScore { get; set; }
+        
+        public int CurrentScore { get; set; }
     }
 }

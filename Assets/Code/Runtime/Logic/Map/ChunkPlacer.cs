@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 
 namespace Code.Runtime.Logic.Map
 {
-    [Serializable]
     public class ChunkPlacer
     {
         private const string ChunksPoolName = "ChunksPool";
