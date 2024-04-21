@@ -1,13 +1,18 @@
 ﻿using Code.Runtime.Infrastructure.States.Core;
+using UnityEngine;
 using Zenject;
 
 namespace Code.Runtime.Infrastructure.Bootstrappers
 {
     public class GameBootstrapper : BootstrapperBase
     {
+        private const int TargetFrameRate = 60;
+
         private void Awake()
         {
              InitializeGameStateMachine();
+
+             Application.targetFrameRate = TargetFrameRate;
              
              DontDestroyOnLoad(this.gameObject);
         }

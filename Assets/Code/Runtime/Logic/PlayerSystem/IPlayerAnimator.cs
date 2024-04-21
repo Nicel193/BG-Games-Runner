@@ -8,7 +8,6 @@ namespace Code.Runtime.Logic.PlayerSystem
         void Jump(bool isPlay);
         void Sliding(bool isPlay);
         void Run(bool isPlay);
-        void StartRun();
         void PlayStartAnimation(Action onStartAnimationPlayed);
     }
 }

@@ -9,6 +9,9 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
 {
     public class GameLoopState : IState, IUpdatebleState
     {
+        private const int TimeToAddScore = 1;
+        private const int ScoreInOneInterval = 1;
+        
         private readonly PlayerStateMachine _playerStateMachine;
         private readonly UserInteractor _userInteractor;
         private readonly IHudView _hudView;
@@ -36,9 +39,9 @@ namespace Code.Runtime.Infrastructure.States.Gameplay
         {
             _scoreTimer += Time.deltaTime;
 
-            if (_scoreTimer >= 1)
+            if (_scoreTimer >= TimeToAddScore)
             {
-                _userInteractor.AddCurrentScore(1);
+                _userInteractor.AddCurrentScore(ScoreInOneInterval);
 
                 _scoreTimer = 0;
             }

@@ -6,12 +6,11 @@ namespace Code.Runtime.Logic.PlayerSystem
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimator : MonoBehaviour, IPlayerAnimator
     {
-        static int DeadHash = Animator.StringToHash ("Dead");
-        static int RunHash = Animator.StringToHash("Run");
-        static int MovingHash = Animator.StringToHash("Moving");
-        static int JumpingHash = Animator.StringToHash("Jumping");
-        static int SlidingHash = Animator.StringToHash("Sliding");
-        static int StartHash = Animator.StringToHash("Start");
+        static readonly int DeadHash = Animator.StringToHash ("Dead");
+        static readonly int MovingHash = Animator.StringToHash("Moving");
+        static readonly int JumpingHash = Animator.StringToHash("Jumping");
+        static readonly int SlidingHash = Animator.StringToHash("Sliding");
+        static readonly int StartHash = Animator.StringToHash("StartRun");
 
         private Animator _animator;
         private Action _onStartAnimationPlayed;
@@ -45,15 +44,10 @@ namespace Code.Runtime.Logic.PlayerSystem
         {
             _onStartAnimationPlayed = onStartAnimationPlayed;
             
-            _animator.Play(StartHash);
+            _animator.SetTrigger(StartHash);
         }
 
         public void OnStartAnimationPlayed() =>
             _onStartAnimationPlayed?.Invoke();
-
-        public void StartRun()
-        {
-            _animator.Play(RunHash);
-        }
     }
 }
