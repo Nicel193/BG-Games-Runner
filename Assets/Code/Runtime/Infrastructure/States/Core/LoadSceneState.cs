@@ -20,7 +20,7 @@ namespace Code.Runtime.Infrastructure.States.Core
         public void Enter(string sceneName)
         {
             if(_interactorContainer.TryGet(out UserInteractor userInteractor))
-                userInteractor.ResetCurrentScore();
+                userInteractor.Clear();
 
             _sceneLoader.Load(sceneName,
                 () => { _logService.Log($"Loaded: {sceneName} (Scene)"); });

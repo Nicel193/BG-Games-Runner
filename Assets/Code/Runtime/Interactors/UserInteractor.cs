@@ -5,6 +5,8 @@ namespace Code.Runtime.Interactors
 {
     public class UserInteractor : Interactor<UserRepository>
     {
+        private const int MaxDeathCount = 1;
+        
         public event Action<int, int> OnScoreIncreased;
         
         public int GetMaxScore() =>
@@ -13,8 +15,11 @@ namespace Code.Runtime.Interactors
         public int GetCurrentScore() =>
             _repository.CurrentScore;
 
-        public void ResetCurrentScore() =>
-            _repository.CurrentScore = 0;
+        public void IncreaseDeathCount() =>
+            _repository.DeathCount++;
+
+        public bool CanRespawn() =>
+            _repository.DeathCount <= MaxDeathCount;
 
         public void AddCurrentScore(int CurrentScore)
         {
@@ -26,6 +31,12 @@ namespace Code.Runtime.Interactors
                 _repository.MaxScore = _repository.CurrentScore;
 
             OnScoreIncreased?.Invoke(_repository.CurrentScore, _repository.MaxScore);
+        }
+
+        public void Clear()
+        {
+            _repository.CurrentScore = 0;
+            _repository.DeathCount = 0;
         }
     }
 }

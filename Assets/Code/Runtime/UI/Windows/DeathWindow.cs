@@ -3,8 +3,10 @@ using Code.Runtime.Infrastructure.StateMachines;
 using Code.Runtime.Infrastructure.States;
 using Code.Runtime.Infrastructure.States.Core;
 using Code.Runtime.Infrastructure.States.Gameplay;
+using Code.Runtime.Interactors;
 using Code.Runtime.Logic.PlayerSystem;
 using Code.Runtime.Logic.PlayerSystem.States;
+using Code.Runtime.Repositories;
 using Code.Runtime.Services.AdsService;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,20 +24,22 @@ namespace Code.Runtime.UI.Windows
         private ISceneLoader _sceneLoader;
         private GameStateMachine _gameStateMachine;
         private GameplayStateMachine _gameplayStateMachine;
+        private UserInteractor _userInteractor;
 
         [Inject]
         public void Construct(PlayerStateMachine playerStateMachine, IAdsService adsService, 
-            GameStateMachine gameStateMachine, GameplayStateMachine gameplayStateMachine)
+            GameStateMachine gameStateMachine, GameplayStateMachine gameplayStateMachine, IInteractorContainer interactorContainer)
         {
             _gameplayStateMachine = gameplayStateMachine;
             _gameStateMachine = gameStateMachine;
             _adsService = adsService;
             _playerStateMachine = playerStateMachine;
+            _userInteractor = interactorContainer.Get<UserInteractor>();
         }
         
         protected override void Initialize()
         {
-            
+            respawnButton.interactable = _userInteractor.CanRespawn();
         }
 
         protected override void SubscribeUpdates()

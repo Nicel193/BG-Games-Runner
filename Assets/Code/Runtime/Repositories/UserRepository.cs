@@ -12,5 +12,7 @@ namespace Code.Runtime.Repositories
         public int MaxScore { get; set; }
         
         public int CurrentScore { get; set; }
+        
+        public int DeathCount { get; set; }
     }
 }

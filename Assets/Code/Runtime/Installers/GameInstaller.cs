@@ -64,10 +64,10 @@ namespace Code.Runtime.Installers
 
         private void BindInputService()
         {
-            // if (Application.isMobilePlatform)
+            if (Application.isMobilePlatform)
                 Container.BindInterfacesTo<MobileInputService>().AsSingle();
-            // else
-            //     Container.BindInterfacesTo<PCInputService>().AsSingle();
+            else
+                Container.BindInterfacesTo<PCInputService>().AsSingle();
         }
 
         private void BindInteractorContainer()

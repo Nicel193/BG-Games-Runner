@@ -1,19 +1,21 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Code.Runtime.Services.InputService
 {
-    public class MobileInputService : MonoBehaviour, IInputService
+    public class MobileInputService : IInputService, ITickable
     {
-        private const float SwipeThreshold = 100f;
-        
-        private Vector2 _fingerDownPosition;
-        private Vector2 _fingerUpPosition;
+        private const float SwipeThreshold = 50f;
 
         public event Action OnLeftMove;
         public event Action OnRightMove;
         public event Action OnJump;
         public event Action OnSliding;
+        
+        private Vector2 _fingerDownPosition;
+        private Vector2 _fingerUpPosition;
+        private bool _isSwipeStart;
 
         public void Tick() =>
             CheckSwipe();
@@ -27,9 +29,11 @@ namespace Code.Runtime.Services.InputService
                 if (touch.phase == TouchPhase.Began)
                 {
                     _fingerDownPosition = touch.position;
+
+                    _isSwipeStart = true;
                 }
 
-                if (touch.phase == TouchPhase.Ended)
+                if (_isSwipeStart && touch.phase == TouchPhase.Moved)
                 {
                     _fingerUpPosition = touch.position;
 
@@ -43,6 +47,8 @@ namespace Code.Runtime.Services.InputService
                         {
                             OnRightMove?.Invoke();
                         }
+                        
+                        _isSwipeStart = false;
                     }
                     else if (Mathf.Abs(_fingerDownPosition.y - _fingerUpPosition.y) > SwipeThreshold)
                     {
@@ -54,8 +60,13 @@ namespace Code.Runtime.Services.InputService
                         {
                             OnJump?.Invoke();
                         }
+                        
+                        _isSwipeStart = false;
                     }
                 }
+
+                if (touch.phase == TouchPhase.Ended)
+                    _isSwipeStart = false;
             }
         }
     }
