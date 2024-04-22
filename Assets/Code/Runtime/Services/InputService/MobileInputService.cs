@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
-using Zenject;
 
 namespace Code.Runtime.Services.InputService
 {
-    public class MobileInputService : IInputService, ITickable
+    public class MobileInputService : MonoBehaviour, IInputService
     {
         private const float SwipeThreshold = 100f;
         
